@@ -1,4 +1,4 @@
-# UnoOnline
+# UNOOnline
 An console implementation of the classic card game UNO with online multiplayer written in C#
 
 ## Protocol
