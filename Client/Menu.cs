@@ -7,7 +7,7 @@ namespace Client
 {
     public class Menu
     {
-        public void DisplayMainMenu()
+        public static void DisplayMainMenu()
         {
             string[] menuItems = {"Join Game", "Create Game", "Help", "Exit"};
 
@@ -18,6 +18,8 @@ namespace Client
                 case 0:
                     break;
                 case 1:
+                    Game game = new Game();
+                    game.CreateGame();
                     break;
                 case 2:
                     break;
@@ -26,7 +28,7 @@ namespace Client
             }
         }
 
-        public int DisplayMenu(string[] menuItems)
+        public static int DisplayMenu(string[] menuItems)
         {
             int cursorPosition = 0;
 
@@ -76,6 +78,7 @@ namespace Client
                 }
                 else if (cki.Key == ConsoleKey.Enter)
                 {
+                    Console.Clear();
                     break;
                 }
 
@@ -85,7 +88,7 @@ namespace Client
             return cursorPosition;
         }
 
-        public void DisplayGameHeader()
+        public static void DisplayGameHeader()
         {
             Console.ForegroundColor = ConsoleColor.Red;
 

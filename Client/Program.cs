@@ -12,9 +12,7 @@ namespace Client
         {
             Console.CursorVisible = false;
 
-            Menu menu = new Menu();
-
-            menu.DisplayMainMenu();
+            Menu.DisplayMainMenu();
         }
     }
 }
