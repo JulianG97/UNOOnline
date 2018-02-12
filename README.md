@@ -19,3 +19,4 @@ An console implementation of the classic card game UNO with online multiplayer w
 | IN | Invalid | - | 0 (+5) | Server declines client request |
 | GS | Game Start | - | 0 (+5) | Server sends game start to all clients of a game |
 | IA | Is Alive | - | 0 (+5) | Server sends is alive to client and client responses |
+| RI | Round Information | PlayerWhoIsOnTurn-LastCardColor-LastCardValue-Player1AmountOfCards-Player2AmountOfCards-... | 9-13 (+5) | Information sent every round from the server to the client |
