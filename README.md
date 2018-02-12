@@ -23,6 +23,7 @@ An console implementation of the classic card game UNO with online multiplayer w
 
 ### Card Protocol ###
 | Color | Protocol | Description |
+| ----- | -------- | ----------- |
 | Red | R-1 | - |
 | Red | R-2 | - |
 | Red | R-3 | - |
@@ -32,3 +33,44 @@ An console implementation of the classic card game UNO with online multiplayer w
 | Red | R-7 | - |
 | Red | R-8 | - |
 | Red | R-9 | - |
+| Red | R-D | Draw Two |
+| Red | R-R | Reverse |
+| Red | R-S | Skip |
+| Blue | B-1 | - |
+| Blue | B-2 | - |
+| Blue | B-3 | - |
+| Blue | B-4 | - |
+| Blue | B-5 | - |
+| Blue | B-6 | - |
+| Blue | B-7 | - |
+| Blue | B-8 | - |
+| Blue | B-9 | - |
+| Blue | B-D | Draw Two |
+| Blue | B-R | Reverse |
+| Blue | B-S | Skip |
+| Green | G-1 | - |
+| Green | G-2 | - |
+| Green | G-3 | - |
+| Green | G-4 | - |
+| Green | G-5 | - |
+| Green | G-6 | - |
+| Green | G-7 | - |
+| Green | G-8 | - |
+| Green | G-9 | - |
+| Green | G-D | Draw Two |
+| Green | G-R | Reverse |
+| Green | G-S | Skip |
+| Yellow | Y-1 | - |
+| Yellow | Y-2 | - |
+| Yellow | Y-3 | - |
+| Yellow | Y-4 | - |
+| Yellow | Y-5 | - |
+| Yellow | Y-6 | - |
+| Yellow | Y-7 | - |
+| Yellow | Y-8 | - |
+| Yellow | Y-9 | - |
+| Yellow | Y-D | Draw Two |
+| Yellow | Y-R | Reverse |
+| Yellow | Y-S | Skip |
+| Wild | W-C | Wild |
+| Wild | W-D | Wild Draw Four |
