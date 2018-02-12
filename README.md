@@ -13,13 +13,16 @@ An console implementation of the classic card game UNO with online multiplayer w
 | Type | Full Name | Value | Length | Description |
 | ---- | --------- | ----- | ------ | ----------- |
 | CG | Create Game | AmountOfPlayers | 1 (+ 5) | Client sends create game request to the server with the amount of players |
-| JG | Join Game | GameID | n (+5) | Client sends join game request to the server with the game id |
-| GL | Game List | GameID-JoinedPlayers-NeededPlayers-... | n (+5) | Server sends list of all open games to the client |
-| OK | OK | - | 0 (+5) | Server verifies client request |
-| IN | Invalid | - | 0 (+5) | Server declines client request |
-| GS | Game Start | - | 0 (+5) | Server sends game start to all clients of a game |
-| IA | Is Alive | - | 0 (+5) | Server sends is alive to client and client responses |
-| RI | Round Information | PlayerWhoIsOnTurn-LastCardColor-LastCardValue-Player1AmountOfCards-Player2AmountOfCards-... | 9-13 (+5) | Information sent every round from the server to the client |
+| JG | Join Game | GameID | n (+ 5) | Client sends join game request to the server with the game ID |
+| RL | Room List | RoomID-JoinedPlayers-NeededPlayers-... | n (+ 5) | Server sends list of all open rooms to the client |
+| OK | OK | - | 0 (+ 5) | Server verifies client request |
+| IN | Invalid | - | 0 (+ 5) | Server declines client request |
+| GS | Game Start | PlayerID | 1 (+ 5) | Server sends game start with player ID to all clients of a game |
+| IA | Is Alive | - | 0 (+ 5) | Server sends is alive to client and client responses |
+| RI | Round Information | LastCardColor-LastCardValue-PlayerWhoIsOnTurn-Player1AmountOfCards-Player2AmountOfCards-... | 9-13 (+ 5) | Information sent every round from the server to the client |
+| PC | Player Cards | Card1Color-Card1Value-Card2Color-Card2Value-... | n (+ 5) | Cards of the player sent from the server to the client when game starts or player is on turn |
+| SC | Set Card | CardColor-CardValue | 3 (+ 5) | Card set by the player sent from the client to the server |
+| GO | Game Over | PlayerID | 1 (+ 5) | Game end with winner ID sent from the server to the client when game is over |
 
 ### Card Protocol ###
 | Color | Protocol | Description |
@@ -34,7 +37,7 @@ An console implementation of the classic card game UNO with online multiplayer w
 | Red | R-7 | - |
 | Red | R-8 | - |
 | Red | R-9 | - |
-| Red | R-D | Draw Two |
+| Red | R-T | Draw Two |
 | Red | R-R | Reverse |
 | Red | R-S | Skip |
 | Blue | B-0 | - |
@@ -47,7 +50,7 @@ An console implementation of the classic card game UNO with online multiplayer w
 | Blue | B-7 | - |
 | Blue | B-8 | - |
 | Blue | B-9 | - |
-| Blue | B-D | Draw Two |
+| Blue | B-T | Draw Two |
 | Blue | B-R | Reverse |
 | Blue | B-S | Skip |
 | Green | G-0 | - |
@@ -60,7 +63,7 @@ An console implementation of the classic card game UNO with online multiplayer w
 | Green | G-7 | - |
 | Green | G-8 | - |
 | Green | G-9 | - |
-| Green | G-D | Draw Two |
+| Green | G-T | Draw Two |
 | Green | G-R | Reverse |
 | Green | G-S | Skip |
 | Yellow | Y-0 | - |
@@ -73,11 +76,11 @@ An console implementation of the classic card game UNO with online multiplayer w
 | Yellow | Y-7 | - |
 | Yellow | Y-8 | - |
 | Yellow | Y-9 | - |
-| Yellow | Y-D | Draw Two |
+| Yellow | Y-T | Draw Two |
 | Yellow | Y-R | Reverse |
 | Yellow | Y-S | Skip |
 | Wild | W-C | Wild |
-| Wild | W-D | Wild Draw Four |
+| Wild | W-F | Wild Draw Four |
 
 ### Amount of Cards ###
 In total: 108 cards
