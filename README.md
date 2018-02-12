@@ -1,14 +1,14 @@
-# UNOOnline
+# UNOOnline #
 An console implementation of the classic card game UNO with online multiplayer written in C#
 
-## Protocol
+## Protocol ##
 ```
 |  UNO   |   TP   |  Content   |
 | Header |  Type  |  Content   |
 | 3 byte | 2 byte | 0 - n byte |
 ```
 
-### Protocol Types
+### Protocol Types ###
 
 | Type | Full Name | Value | Length | Description |
 | ---- | --------- | ----- | ------ | ----------- |
@@ -20,3 +20,15 @@ An console implementation of the classic card game UNO with online multiplayer w
 | GS | Game Start | - | 0 (+5) | Server sends game start to all clients of a game |
 | IA | Is Alive | - | 0 (+5) | Server sends is alive to client and client responses |
 | RI | Round Information | PlayerWhoIsOnTurn-LastCardColor-LastCardValue-Player1AmountOfCards-Player2AmountOfCards-... | 9-13 (+5) | Information sent every round from the server to the client |
+
+### Card Protocol ###
+| Color | Protocol | Description |
+| Red | R-1 | - |
+| Red | R-2 | - |
+| Red | R-3 | - |
+| Red | R-4 | - |
+| Red | R-5 | - |
+| Red | R-6 | - |
+| Red | R-7 | - |
+| Red | R-8 | - |
+| Red | R-9 | - |
