@@ -24,6 +24,7 @@ An console implementation of the classic card game UNO with online multiplayer w
 ### Card Protocol ###
 | Color | Protocol | Description |
 | ----- | -------- | ----------- |
+| Red | R-0 | - |
 | Red | R-1 | - |
 | Red | R-2 | - |
 | Red | R-3 | - |
@@ -36,6 +37,7 @@ An console implementation of the classic card game UNO with online multiplayer w
 | Red | R-D | Draw Two |
 | Red | R-R | Reverse |
 | Red | R-S | Skip |
+| Blue | B-0 | - |
 | Blue | B-1 | - |
 | Blue | B-2 | - |
 | Blue | B-3 | - |
@@ -48,6 +50,7 @@ An console implementation of the classic card game UNO with online multiplayer w
 | Blue | B-D | Draw Two |
 | Blue | B-R | Reverse |
 | Blue | B-S | Skip |
+| Green | G-0 | - |
 | Green | G-1 | - |
 | Green | G-2 | - |
 | Green | G-3 | - |
@@ -60,6 +63,7 @@ An console implementation of the classic card game UNO with online multiplayer w
 | Green | G-D | Draw Two |
 | Green | G-R | Reverse |
 | Green | G-S | Skip |
+| Yellow | Y-0 | - |
 | Yellow | Y-1 | - |
 | Yellow | Y-2 | - |
 | Yellow | Y-3 | - |
@@ -74,3 +78,7 @@ An console implementation of the classic card game UNO with online multiplayer w
 | Yellow | Y-S | Skip |
 | Wild | W-C | Wild |
 | Wild | W-D | Wild Draw Four |
+
+### Amount of Cards ###
+In total: 108 cards
+![picture alt](https://raw.githubusercontent.com/JulianG97/UNOOnline/master/UNO%20Card%20Deck.png "UNO Card Deck")
