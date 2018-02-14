@@ -15,6 +15,7 @@ An console implementation of the classic card game UNO with online multiplayer w
 | CG | Create Game | AmountOfPlayers | 1 (+ 5) | Client sends create game request to the server with the amount of players |
 | JG | Join Game | GameID | n (+ 5) | Client sends join game request to the server with the game ID |
 | RL | Room List | RoomID-JoinedPlayers-NeededPlayers-... | n (+ 5) | Server sends list of all open rooms to the client |
+| RR | Request Rooms | - | 0 (+ 5) | Client requests room list from the server |
 | OK | OK | - | 0 (+ 5) | Server verifies client request |
 | IN | Invalid | - | 0 (+ 5) | Server declines client request |
 | GS | Game Start | PlayerID | 1 (+ 5) | Server sends game start with player ID to all clients of a game |
