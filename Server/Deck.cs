@@ -9,10 +9,8 @@ namespace Server
     {
         public List<Card> Cards
         {
-            get => default(List<Card>);
-            set
-            {
-            }
+            get;
+            set;
         }
 
         public void AddCard()

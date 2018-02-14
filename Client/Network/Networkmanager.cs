@@ -16,6 +16,9 @@ namespace Client
         private IPEndPoint ipEndpoint;
         private Thread readThread;
 
+        public event EventHandler<EventArgs> OnConnectionsLost;
+        public event EventHandler<OnDataReceivedEventArgs> OnDataReceived;
+
         public NetworkManager(IPAddress ip, int port = 3000)
         {
             this.ipEndpoint = new IPEndPoint(ip, port);
@@ -40,7 +43,7 @@ namespace Client
             }
             catch
             {
-                // FireOnConnectionLost
+                this.FireOnConnectionLost();
             }
         }
 
@@ -54,7 +57,7 @@ namespace Client
             }
             catch
             {
-                // FireOnConnectionLost
+                this.FireOnConnectionLost();
             }
         }
 
@@ -74,11 +77,29 @@ namespace Client
                         currentByte = this.stream.Read(buffer, 0, 1);
                         receivedBytes.Add(buffer[0]);
                     }
+
+                    this.OnDataReceived(this, new OnDataReceivedEventArgs(receivedBytes.ToArray()));
                 }
                 catch
                 {
-                    // FireOnConnectionLost
+                    this.FireOnConnectionLost();
                 }
+            }
+        }
+
+        protected virtual void FireOnConnectionLost()
+        {
+            if (this.OnConnectionsLost != null)
+            {
+                this.OnConnectionsLost(this, new EventArgs());
+            }
+        }
+
+        protected virtual void FireOnDataReceived(byte[] data)
+        {
+            if (this.OnDataReceived != null)
+            {
+                this.OnDataReceived(this, new OnDataReceivedEventArgs(data));
             }
         }
     }

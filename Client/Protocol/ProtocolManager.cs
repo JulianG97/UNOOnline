@@ -14,6 +14,12 @@ namespace Client
             return protocol;
         }
 
+        public static Protocol RequestRooms()
+        {
+            Protocol protocol = new Protocol(ProtocolTypes.RequestRooms, new byte[0]);
+            return protocol;
+        }
+
         public static Protocol JoinGame(string gameID)
         {
             Protocol protocol = new Protocol(ProtocolTypes.JoinGame, Encoding.ASCII.GetBytes(gameID));

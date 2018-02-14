@@ -7,8 +7,36 @@ namespace Server
 {
     public class Game
     {
-        private Deck DiscardPile;
         private Deck DrawPile;
+
+        public Deck DiscardPile
+        {
+            get;
+            private set;
+        }
+
+        public Player PlayerWhoIsOnTurn
+        {
+            get;
+            private set;
+        }
+
+        public int GameID
+        {
+            get;
+            set;
+        }
+
+        public int PlayersNeeded
+        {
+            get;
+            set;
+        }
+        public int JoinedPlayers
+        {
+            get;
+            set;
+        }
 
         public List<Player> Players
         {

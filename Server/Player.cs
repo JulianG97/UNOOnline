@@ -7,6 +7,12 @@ namespace Server
 {
     public class Player
     {
+        public int PlayerID
+        {
+            get;
+            set;
+        }
+
         public Deck Deck
         {
             get => default(Deck);

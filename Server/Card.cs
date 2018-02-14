@@ -7,12 +7,10 @@ namespace Server
 {
     public class Card
     {
-        public int Color
+        public Color Color
         {
-            get => default(int);
-            set
-            {
-            }
+            get;
+            set;
         }
     }
 }

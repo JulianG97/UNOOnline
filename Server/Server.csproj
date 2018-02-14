@@ -45,12 +45,18 @@
     <Compile Include="ActionCard.cs" />
     <Compile Include="ActionCardType.cs" />
     <Compile Include="Card.cs" />
+    <Compile Include="Color.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Network\Networkmanager.cs" />
+    <Compile Include="Network\OnDataReceivedEventArgs.cs" />
     <Compile Include="NumericCard.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protocol\Protocol.cs" />
+    <Compile Include="Protocol\ProtocolManager.cs" />
+    <Compile Include="Protocol\ProtocolTypes.cs" />
     <Compile Include="Server.cs" />
   </ItemGroup>
   <ItemGroup>

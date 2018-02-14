@@ -10,6 +10,9 @@ namespace Client
         // CreateGame = CG
         public static byte[] CreateGame = new byte[] { 67, 71 };
 
+        // RequestRooms = RR
+        public static byte[] RequestRooms = new byte[] { 82, 82 };
+
         // JoinGame = JG
         public static byte[] JoinGame = new byte[] { 74, 71 };
 

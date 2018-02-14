@@ -7,10 +7,10 @@ namespace Server
 {
     public enum ActionCardType
     {
-        DrawTwo,
-        Reverse,
-        Skip,
-        Wild,
-        WildDrawFour
+        DrawTwo = 'T',
+        Reverse = 'R',
+        Skip = 'S',
+        Wild = 'C',
+        WildDrawFour = 'F'
     }
 }
