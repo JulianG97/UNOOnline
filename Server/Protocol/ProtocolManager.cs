@@ -86,5 +86,44 @@ namespace Server
             Protocol protocol = new Protocol(ProtocolTypes.RoundInformation, Encoding.ASCII.GetBytes((char)lastCard.Color + "-" + value + "-" + playerWhoIsOnTurn.PlayerID + "-" + amountOfPlayerCards));
             return protocol;
         }
+
+        public static Protocol PlayerCards(Player player)
+        {
+            string playerCards = string.Empty;
+
+            foreach (Card card in player.Deck.Cards)
+            {
+                char value = '\n';
+
+                if (card is ActionCard)
+                {
+                    ActionCard actionCard = (ActionCard)card;
+
+                    value = (char)actionCard.Type;
+                }
+                else if (card is NumericCard)
+                {
+                    NumericCard numericCard = (NumericCard)card;
+
+                    value = (char)numericCard.Number;
+                }
+
+                playerCards += (char)card.Color + "-" + value;
+
+                if (card != player.Deck.Cards.Last())
+                {
+                    playerCards += "-";
+                }
+            }
+
+            Protocol protocol = new Protocol(ProtocolTypes.PlayerCards, Encoding.ASCII.GetBytes(playerCards));
+            return protocol;
+;        }
+
+        public static Protocol GameOver(string playerID)
+        {
+            Protocol protocol = new Protocol(ProtocolTypes.GameOver, Encoding.ASCII.GetBytes(playerID));
+            return protocol;
+        }
     }
 }

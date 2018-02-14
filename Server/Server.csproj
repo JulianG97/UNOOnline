@@ -42,22 +42,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionCard.cs" />
-    <Compile Include="ActionCardType.cs" />
-    <Compile Include="Card.cs" />
-    <Compile Include="Color.cs" />
-    <Compile Include="Deck.cs" />
-    <Compile Include="Game.cs" />
+    <Compile Include="Game\ActionCard.cs" />
+    <Compile Include="Game\ActionCardType.cs" />
+    <Compile Include="Game\Card.cs" />
+    <Compile Include="Game\Color.cs" />
+    <Compile Include="Game\Deck.cs" />
+    <Compile Include="Game\Game.cs" />
     <Compile Include="Network\Networkmanager.cs" />
     <Compile Include="Network\OnDataReceivedEventArgs.cs" />
-    <Compile Include="NumericCard.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Game\NumericCard.cs" />
+    <Compile Include="Game\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocol\Protocol.cs" />
     <Compile Include="Protocol\ProtocolManager.cs" />
     <Compile Include="Protocol\ProtocolTypes.cs" />
-    <Compile Include="Server.cs" />
+    <Compile Include="Network\Server.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
