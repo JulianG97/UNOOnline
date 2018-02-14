@@ -17,8 +17,29 @@
   <Class Name="Client.Game">
     <Position X="6.25" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAAACAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAAAAAAAACAAAAABAAAAAAIAAAQAAAAAA=</HashCode>
       <FileName>Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ProtocolManager">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAACAAAEAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProtocolManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Protocol">
+    <Position X="0.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAgAAAAAAAAAAAAAAAAAAAEAAAQAAAAAAAAA=</HashCode>
+      <FileName>Protocol.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.NetworkManager">
+    <Position X="2.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NetworkManager.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
