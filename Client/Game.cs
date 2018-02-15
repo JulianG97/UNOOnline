@@ -73,7 +73,7 @@ namespace Client
 
                     Console.Clear();
 
-                    this.Start();
+                    this.networkManager.Send(ProtocolManager.CreateGame(this.players.ToString()));
                     break;
                 }
 
