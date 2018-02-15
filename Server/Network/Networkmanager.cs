@@ -85,7 +85,7 @@ namespace Server
                     byte[] buffer = new byte[1];
                     int currentByte = 0;
 
-                    while (Encoding.ASCII.GetString(buffer) != "\n")
+                    while (this.playerStream.DataAvailable)
                     {
                         currentByte = this.playerStream.Read(buffer, 0, 1);
                         receivedBytes.Add(buffer[0]);

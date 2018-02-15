@@ -77,7 +77,7 @@ namespace Server
         {
             if (args.Protocol != null)
             {
-                if (args.Protocol.Type == ProtocolTypes.CreateGame)
+                if (args.Protocol.Type.SequenceEqual(ProtocolTypes.CreateGame))
                 {
                     this.CreateNewGame(args.Protocol.Content, args.NetworkManager);
                 }
