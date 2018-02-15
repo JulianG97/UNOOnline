@@ -11,33 +11,23 @@ namespace Server
 {
     public class NetworkManager
     {
-        private TcpClient client = new TcpClient();
-        private NetworkStream stream;
-        private IPEndPoint ipEndpoint;
+        private TcpClient playerClient;
+        private NetworkStream playerStream;
         private Thread readThread;
 
         public event EventHandler<EventArgs> OnConnectionsLost;
         public event EventHandler<OnDataReceivedEventArgs> OnDataReceived;
 
-        public NetworkManager(IPAddress ip, int port = 3000)
+        public NetworkManager(TcpClient playerClient)
         {
-            this.ipEndpoint = new IPEndPoint(ip, port);
+            this.playerClient = playerClient;
         }
 
         public void Start()
         {
             try
             {
-                this.client.Connect(this.ipEndpoint);
-            }
-            catch
-            {
-                Console.WriteLine("The server is unreachable! Please try again later...");
-            }
-
-            try
-            {
-                this.stream = client.GetStream();
+                this.playerStream = this.playerClient.GetStream();
                 this.readThread = new Thread(this.Read);
                 readThread.Start();
             }
@@ -53,7 +43,7 @@ namespace Server
             {
                 byte[] sendBytes = protocol.Create();
 
-                this.stream.Write(sendBytes, 0, sendBytes.Length);
+                this.playerStream.Write(sendBytes, 0, sendBytes.Length);
             }
             catch
             {
@@ -74,7 +64,7 @@ namespace Server
 
                     while (Encoding.ASCII.GetString(buffer) != "\n")
                     {
-                        currentByte = this.stream.Read(buffer, 0, 1);
+                        currentByte = this.playerStream.Read(buffer, 0, 1);
                         receivedBytes.Add(buffer[0]);
                     }
 
