@@ -14,6 +14,7 @@ namespace Server
         private TcpClient playerClient;
         private NetworkStream playerStream;
         private Thread readThread;
+        private bool isReading;
 
         public event EventHandler<EventArgs> OnConnectionsLost;
         public event EventHandler<OnDataReceivedEventArgs> OnDataReceived;
@@ -29,6 +30,7 @@ namespace Server
             {
                 this.playerStream = this.playerClient.GetStream();
                 this.readThread = new Thread(this.Read);
+                this.isReading = true;
                 readThread.Start();
             }
             catch
@@ -37,11 +39,26 @@ namespace Server
             }
         }
 
+        public void Stop()
+        {
+            try
+            {
+                this.playerStream.Close();
+                this.playerClient.Close();
+                this.isReading = false;
+                this.readThread.Join();
+            }
+            catch
+            {
+
+            }
+        }
+
         public void Send(Protocol protocol)
         {
             try
             {
-                byte[] sendBytes = protocol.Create();
+                byte[] sendBytes = protocol.ToByteArray();
 
                 this.playerStream.Write(sendBytes, 0, sendBytes.Length);
             }
@@ -54,10 +71,16 @@ namespace Server
         // Reads each byte from the stream until the stream is empty
         public void Read()
         {
-            while (true)
+            while (this.isReading == true)
             {
                 try
                 {
+                    if (!this.playerStream.DataAvailable)
+                    {
+                        Thread.Sleep(10);
+                        continue;
+                    }
+
                     List<byte> receivedBytes = new List<byte>();
                     byte[] buffer = new byte[1];
                     int currentByte = 0;
@@ -68,7 +91,7 @@ namespace Server
                         receivedBytes.Add(buffer[0]);
                     }
 
-                    this.OnDataReceived(this, new OnDataReceivedEventArgs(receivedBytes.ToArray()));
+                    this.FireOnDataReceived(receivedBytes.ToArray());
                 }
                 catch
                 {
@@ -89,7 +112,7 @@ namespace Server
         {
             if (this.OnDataReceived != null)
             {
-                this.OnDataReceived(this, new OnDataReceivedEventArgs(data));
+                this.OnDataReceived(this, new OnDataReceivedEventArgs(data, this));
             }
         }
     }

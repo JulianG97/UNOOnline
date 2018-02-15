@@ -7,6 +7,18 @@ namespace Server
 {
     public class ProtocolTypes
     {
+        // CreateGame = CG
+        public static byte[] CreateGame = new byte[] { 67, 71 };
+
+        // RequestRooms = RR
+        public static byte[] RequestRooms = new byte[] { 82, 82 };
+
+        // JoinGame = JG
+        public static byte[] JoinGame = new byte[] { 74, 71 };
+
+        // SetCard = SC
+        public static byte[] SetCard = new byte[] { 83, 67 };
+
         // RoomList = RL
         public static byte[] RoomList = new byte[] { 82, 76 };
 

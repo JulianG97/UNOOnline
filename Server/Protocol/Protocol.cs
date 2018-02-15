@@ -45,7 +45,7 @@ namespace Server
             set;
         }
 
-        public byte[] Create()
+        public byte[] ToByteArray()
         {
             List<byte> protocol = new List<byte>();
 

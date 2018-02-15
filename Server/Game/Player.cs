@@ -7,6 +7,12 @@ namespace Server
 {
     public class Player
     {
+        public Player(int playerID, NetworkManager networkManager)
+        {
+            this.PlayerID = playerID;
+            this.NetworkManager = networkManager;
+        }
+
         public int PlayerID
         {
             get;
@@ -15,10 +21,14 @@ namespace Server
 
         public Deck Deck
         {
-            get => default(Deck);
-            set
-            {
-            }
+            get;
+            set;
+        }
+
+        public NetworkManager NetworkManager
+        {
+            get;
+            set;
         }
 
         public void DiscardCard()

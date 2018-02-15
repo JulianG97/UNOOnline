@@ -9,6 +9,13 @@ namespace Server
     {
         private Deck DrawPile;
 
+        public Game(int gameID, int playersNeeded)
+        {
+            this.GameID = gameID;
+            this.PlayersNeeded = playersNeeded;
+            this.JoinedPlayers = 1;
+        }
+
         public Deck DiscardPile
         {
             get;
@@ -40,10 +47,8 @@ namespace Server
 
         public List<Player> Players
         {
-            get => default(List<Player>);
-            set
-            {
-            }
+            get;
+            set;
         }
     }
 }
