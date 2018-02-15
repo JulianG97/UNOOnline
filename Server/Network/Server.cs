@@ -89,6 +89,10 @@ namespace Server
                 {
                     this.SendRoomList(args.NetworkManager);
                 }
+                else
+                {
+                    // Redirect to game class
+                }
             }
         }
 

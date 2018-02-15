@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Client
 {
@@ -9,16 +11,19 @@ namespace Client
     {
         public static void DisplayMainMenu()
         {
-            string[] menuItems = {"Join Game", "Create Game", "Help", "Exit"};
+            NetworkManager networkManager = new NetworkManager(IPAddress.Parse("127.0.0.1"));
 
+            string[] menuItems = {"Join Game", "Create Game", "Help", "Exit"};
             int menuPosition = DisplayMenu(menuItems);
+
+            Game game = new Game(networkManager);
 
             switch (menuPosition)
             {
                 case 0:
+                    game.JoinGame();
                     break;
                 case 1:
-                    Game game = new Game();
                     game.CreateGame();
                     break;
                 case 2:

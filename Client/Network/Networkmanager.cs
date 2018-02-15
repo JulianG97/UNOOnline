@@ -15,13 +15,14 @@ namespace Client
         private NetworkStream stream;
         private IPEndPoint ipEndpoint;
         private Thread readThread;
+        private bool isReading;
 
         public event EventHandler<EventArgs> OnConnectionsLost;
         public event EventHandler<OnDataReceivedEventArgs> OnDataReceived;
 
-        public NetworkManager(IPAddress ip, int port = 3000)
+        public NetworkManager(IPAddress ip)
         {
-            this.ipEndpoint = new IPEndPoint(ip, port);
+            this.ipEndpoint = new IPEndPoint(ip, 3000);
         }
 
         public void Start()
@@ -39,6 +40,7 @@ namespace Client
             {
                 this.stream = client.GetStream();
                 this.readThread = new Thread(this.Read);
+                this.isReading = true;
                 readThread.Start();
             }
             catch
@@ -51,7 +53,7 @@ namespace Client
         {
             try
             {
-                byte[] sendBytes = protocol.Create();
+                byte[] sendBytes = protocol.ToByteArray();
 
                 this.stream.Write(sendBytes, 0, sendBytes.Length);
             }
@@ -64,10 +66,16 @@ namespace Client
         // Reads each byte from the stream until the stream is empty
         public void Read()
         {
-            while (true)
+            while (this.isReading == true)
             {
                 try
                 {
+                    if (!this.stream.DataAvailable)
+                    {
+                        Thread.Sleep(10);
+                        continue;
+                    }
+
                     List<byte> receivedBytes = new List<byte>();
                     byte[] buffer = new byte[1];
                     int currentByte = 0;
@@ -78,7 +86,7 @@ namespace Client
                         receivedBytes.Add(buffer[0]);
                     }
 
-                    this.OnDataReceived(this, new OnDataReceivedEventArgs(receivedBytes.ToArray()));
+                    this.FireOnDataReceived(receivedBytes.ToArray());
                 }
                 catch
                 {
