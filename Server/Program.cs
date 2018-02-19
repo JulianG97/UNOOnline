@@ -10,6 +10,9 @@ namespace Server
     {
         public static void Main(string[] args)
         {
+            Game game = new Game(1, 4);
+            game.PrepareGameStart();
+            Console.ReadKey();
             Server server = new Server();
 
             DisplayGameHeader();

@@ -25,7 +25,18 @@ namespace Server
 
         public void Mix()
         {
-            throw new System.NotImplementedException();
+            Random random = new Random();
+
+            for (int i = 0; i < 1000; i++)
+            {
+                int r1 = random.Next(0, 108);
+
+                int r2 = random.Next(0, 108);
+
+                Card temp = this.Cards[r1];
+                this.Cards[r1] = this.Cards[r2];
+                this.Cards[r2] = temp;
+            }
         }
     }
 }

@@ -144,6 +144,11 @@ namespace Server
                         game.JoinedPlayers++;
                         gameFound = true;
                         networkManager.Send(ProtocolManager.OK());
+
+                        if (game.JoinedPlayers == game.PlayersNeeded)
+                        {
+                            this.StartGame(game);
+                        }
                     }
                     else
                     {
@@ -157,6 +162,15 @@ namespace Server
             if (gameFound == false)
             {
                 networkManager.Send(ProtocolManager.Invalid());
+            }
+        }
+
+        private void StartGame(Game game)
+        {
+            foreach (Player player in game.Players)
+            {
+                game.PrepareGameStart();
+                player.NetworkManager.Send(ProtocolManager.GameStart(player.PlayerID.ToString()));
             }
         }
 
