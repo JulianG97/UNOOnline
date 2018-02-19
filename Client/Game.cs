@@ -15,6 +15,7 @@ namespace Client
         private bool onTurn;
         private NetworkManager networkManager;
         private bool validAction;
+        private bool serverResponseReceived;
         private string roomList;
         
         public Game(NetworkManager networkManager)
@@ -77,6 +78,9 @@ namespace Client
 
                     this.networkManager.Start();
                     this.networkManager.Send(ProtocolManager.CreateGame(this.players.ToString()));
+
+                    this.WaitForServerResponse();
+
                     break;
                 }
 
@@ -89,6 +93,8 @@ namespace Client
             this.networkManager.Start();
             string[] roomArray = null;
             this.networkManager.Send(ProtocolManager.RequestRooms());
+
+            this.WaitForServerResponse();
 
             int position = 0;
 
@@ -130,6 +136,8 @@ namespace Client
                 if (cki.Key == ConsoleKey.R)
                 {
                     this.networkManager.Send(ProtocolManager.RequestRooms());
+
+                    this.WaitForServerResponse();
                 }
                 else if (cki.Key == ConsoleKey.E)
                 {
@@ -169,6 +177,8 @@ namespace Client
                     {
                         this.networkManager.Send(ProtocolManager.JoinGame(roomArray[position * 3]));
 
+                        this.WaitForServerResponse();
+
                         Console.Clear();
 
                         Menu.DisplayGameHeader();
@@ -189,6 +199,9 @@ namespace Client
                             Console.ReadKey(true);
 
                             this.networkManager.Send(ProtocolManager.RequestRooms());
+
+                            this.WaitForServerResponse();
+
                             roomArray = this.roomList.Split('-');
                         }
                     }
@@ -247,32 +260,43 @@ namespace Client
                 if (args.Protocol.Type.SequenceEqual(ProtocolTypes.OK))
                 {
                     this.validAction = true;
+                    this.serverResponseReceived = true;
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.Invalid))
                 {
                     this.validAction = false;
+                    this.serverResponseReceived = true;
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.GameStart))
                 {
-
+                    this.serverResponseReceived = true;
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.GameOver))
                 {
-
+                    this.serverResponseReceived = true;
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.PlayerCards))
                 {
-
+                    this.serverResponseReceived = true;
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.RoomList))
                 {
                     this.roomList = Encoding.ASCII.GetString(args.Protocol.Content);
+                    this.serverResponseReceived = true;
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.RoundInformation))
                 {
-
+                    this.serverResponseReceived = true;
                 }
             }
+        }
+
+        private void WaitForServerResponse()
+        {
+            while (this.serverResponseReceived == false)
+            { }
+
+            this.serverResponseReceived = false;
         }
 
         private void ConnectionLost(object sender, EventArgs args)

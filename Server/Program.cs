@@ -49,7 +49,10 @@ namespace Server
                 }
                 else if (cki.Key == ConsoleKey.E)
                 {
-                    server.Stop();
+                    if (server.isRunning == true)
+                    {
+                        server.Stop();
+                    }
                     break;
                 }
             }
