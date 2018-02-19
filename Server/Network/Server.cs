@@ -61,6 +61,8 @@ namespace Server
 
         public void Stop()
         {
+            // Stop all connected network managers
+            this.listener.Stop();
             this.isRunning = false;
             Console.WriteLine("The server has been successfully stopped!");
         }

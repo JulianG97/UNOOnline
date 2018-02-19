@@ -19,7 +19,8 @@ namespace Client
         public Game(NetworkManager networkManager)
         {
             this.networkManager = networkManager;
-            this.networkManager.Start();
+            this.networkManager.OnConnectionsLost += this.ConnectionLost;
+            this.networkManager.OnDataReceived += this.DataReceived;
             this.validAction = false;
         }
 
@@ -73,6 +74,7 @@ namespace Client
 
                     Console.Clear();
 
+                    this.networkManager.Start();
                     this.networkManager.Send(ProtocolManager.CreateGame(this.players.ToString()));
                     break;
                 }
@@ -153,6 +155,7 @@ namespace Client
                 }
                 else if (cki.Key == ConsoleKey.Enter)
                 {
+                    this.networkManager.Start();
                     this.networkManager.Send(ProtocolManager.JoinGame(roomArray[position * 3]));
 
                     Console.Clear();
@@ -250,6 +253,11 @@ namespace Client
 
                 }
             }
+        }
+
+        private void ConnectionLost(object sender, EventArgs args)
+        {
+            // If connection to server is lost
         }
     }
 }

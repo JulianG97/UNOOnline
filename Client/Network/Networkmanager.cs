@@ -33,7 +33,17 @@ namespace Client
             }
             catch
             {
-                Console.WriteLine("The server is unreachable! Please try again later...");
+                Console.Clear();
+
+                Menu.DisplayGameHeader();
+                Console.WriteLine();
+                Console.WriteLine("The server is unreachable! Please try again later.");
+                Console.WriteLine("Press any key to return to the main menu...");
+                Console.ReadKey(true);
+
+                Console.Clear();
+
+                Menu.DisplayMainMenu();
             }
 
             try
