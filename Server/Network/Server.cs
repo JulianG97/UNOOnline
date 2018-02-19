@@ -81,13 +81,20 @@ namespace Server
             {
                 if (args.Protocol.Type.SequenceEqual(ProtocolTypes.CreateGame))
                 {
-                    this.CreateNewGame(args.Protocol.Content, args.NetworkManager);
+                    int integer;
+
+                    bool isInteger = int.TryParse(Encoding.ASCII.GetString(args.Protocol.Content), out integer);
+
+                    if (isInteger == true)
+                    {
+                        this.CreateNewGame(integer, args.NetworkManager);
+                    }
                 }
-                else if (args.Protocol.Type == ProtocolTypes.JoinGame)
+                else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.JoinGame))
                 {
                     this.JoinGame(args.Protocol.Content, args.NetworkManager);
                 }
-                else if (args.Protocol.Type == ProtocolTypes.RequestRooms)
+                else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.RequestRooms))
                 {
                     this.SendRoomList(args.NetworkManager);
                 }
@@ -98,14 +105,15 @@ namespace Server
             }
         }
 
-        private void CreateNewGame(byte[] gameSettings, NetworkManager networkManager)
+        private void CreateNewGame(int amountOfPlayers, NetworkManager networkManager)
         {
-            Game game = new Game(this.nextGameID, gameSettings[0]);
+            Game game = new Game(this.nextGameID, amountOfPlayers);
             this.nextGameID++;
+            game.Players = new List<Player>();
             game.Players.Add(new Player(1, networkManager));
             this.games.Add(game);
 
-            if (gameSettings[0] < 2 || gameSettings[0] > 4)
+            if (amountOfPlayers < 2 || amountOfPlayers > 4)
             {
                 networkManager.Send(ProtocolManager.Invalid());
             }

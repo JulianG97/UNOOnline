@@ -43,9 +43,9 @@ namespace Server
         {
             try
             {
+                this.isReading = false;
                 this.playerStream.Close();
                 this.playerClient.Close();
-                this.isReading = false;
                 this.readThread.Join();
             }
             catch
