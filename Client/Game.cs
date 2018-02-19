@@ -90,8 +90,6 @@ namespace Client
             string[] roomArray = null;
             this.networkManager.Send(ProtocolManager.RequestRooms());
 
-            Thread.Sleep(100);
-
             int position = 0;
 
             while (true)
@@ -180,6 +178,8 @@ namespace Client
                         if (this.validAction == true)
                         {
                             Console.WriteLine("Please wait until enough players joined the game...");
+
+                            Console.ReadKey();
                         }
                         else if (this.validAction == false)
                         {
