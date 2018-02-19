@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace Client
 {
@@ -88,6 +89,9 @@ namespace Client
             this.networkManager.Start();
             string[] roomArray = null;
             this.networkManager.Send(ProtocolManager.RequestRooms());
+
+            Thread.Sleep(100);
+
             int position = 0;
 
             while (true)
@@ -99,12 +103,10 @@ namespace Client
                 Console.WriteLine("[UP/DOWN ARROW] Navigate [R] Refresh room list [E] Go back to main menu");
                 Console.WriteLine();
 
-                if (this.roomList == null)
+                if (this.roomList == null || this.roomList == string.Empty)
                 {
                     Console.WriteLine("There aren't any rooms open to join!");
                     Console.WriteLine("Please create a new game...");
-
-                    Console.ReadKey(true);
                 }
                 else
                 {
@@ -125,16 +127,11 @@ namespace Client
                     }
                 }
 
-                this.networkManager.Stop();
-
                 ConsoleKeyInfo cki = Console.ReadKey(true);
 
                 if (cki.Key == ConsoleKey.R)
                 {
-                    this.networkManager.Start();
                     this.networkManager.Send(ProtocolManager.RequestRooms());
-                    roomArray = this.roomList.Split('-');
-                    this.networkManager.Stop();
                 }
                 else if (cki.Key == ConsoleKey.E)
                 {
@@ -142,55 +139,69 @@ namespace Client
                 }
                 else if (cki.Key == ConsoleKey.UpArrow)
                 {
-                    if (position - 1 < 0)
+                    if (roomArray != null)
                     {
-                        position = roomArray.Length / 3;
-                    }
-                    else
-                    {
-                        position--;
+                        if (position - 1 < 0)
+                        {
+                            position = (roomArray.Length / 3) - 1;
+                        }
+                        else
+                        {
+                            position--;
+                        }
                     }
                 }
                 else if (cki.Key == ConsoleKey.DownArrow)
                 {
-                    if (position + 1 > roomArray.Length / 3)
+                    if (roomArray != null)
                     {
-                        position = 0;
-                    }
-                    else
-                    {
-                        position++;
+                        if (position + 1 > (roomArray.Length / 3) - 1)
+                        {
+                            position = 0;
+                        }
+                        else
+                        {
+                            position++;
+                        }
                     }
                 }
                 else if (cki.Key == ConsoleKey.Enter)
                 {
-                    this.networkManager.Start();
-                    this.networkManager.Send(ProtocolManager.JoinGame(roomArray[position * 3]));
-
-                    Console.Clear();
-
-                    Menu.DisplayGameHeader();
-                    Console.WriteLine();
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    if (this.validAction == true)
+                    if (roomArray != null)
                     {
-                        Console.WriteLine("Please wait until enough players joined the game...");
-                    }
-                    else if (this.validAction == false)
-                    {
-                        Console.WriteLine("The room you tried to join isn't open or already full!");
-                        Console.WriteLine("Press any key to continue!");
+                        this.networkManager.Send(ProtocolManager.JoinGame(roomArray[position * 3]));
 
-                        Console.ReadKey(true);
+                        Console.Clear();
 
-                        this.networkManager.Send(ProtocolManager.RequestRooms());
-                        roomArray = this.roomList.Split('-');
+                        Menu.DisplayGameHeader();
+                        Console.WriteLine();
+                        Console.ForegroundColor = ConsoleColor.White;
+
+                        if (this.validAction == true)
+                        {
+                            Console.WriteLine("Please wait until enough players joined the game...");
+                        }
+                        else if (this.validAction == false)
+                        {
+                            Console.WriteLine("The room you tried to join isn't open or already full!");
+                            Console.WriteLine("Press any key to continue!");
+
+                            Console.ReadKey(true);
+
+                            this.networkManager.Send(ProtocolManager.RequestRooms());
+                            roomArray = this.roomList.Split('-');
+                        }
                     }
                 }
 
                 Console.Clear();
             }
+
+            this.networkManager.Stop();
+
+            Console.Clear();
+
+            Menu.DisplayMainMenu();
         }
 
         public void Start()
@@ -255,7 +266,7 @@ namespace Client
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.RoomList))
                 {
-                    this.roomList = args.Protocol.Content.ToString();
+                    this.roomList = Encoding.ASCII.GetString(args.Protocol.Content);
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.RoundInformation))
                 {

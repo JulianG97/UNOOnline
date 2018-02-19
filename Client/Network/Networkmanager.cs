@@ -11,7 +11,7 @@ namespace Client
 {
     public class NetworkManager
     {
-        private TcpClient client = new TcpClient();
+        private TcpClient client;
         private NetworkStream stream;
         private IPEndPoint ipEndpoint;
         private Thread readThread;
@@ -23,6 +23,7 @@ namespace Client
         public NetworkManager(IPAddress ip)
         {
             this.ipEndpoint = new IPEndPoint(ip, 3000);
+            this.client = new TcpClient();
         }
 
         public void Start()
@@ -37,8 +38,10 @@ namespace Client
 
                 Menu.DisplayGameHeader();
                 Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("The server is unreachable! Please try again later.");
                 Console.WriteLine("Press any key to return to the main menu...");
+                Console.ResetColor();
                 Console.ReadKey(true);
 
                 Console.Clear();
@@ -66,7 +69,7 @@ namespace Client
                 this.isReading = false;
                 this.stream.Close();
                 this.client.Close();
-                this.readThread.Join();
+                this.client = new TcpClient();
             }
             catch
             {

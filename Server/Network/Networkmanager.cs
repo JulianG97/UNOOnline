@@ -46,7 +46,6 @@ namespace Server
                 this.isReading = false;
                 this.playerStream.Close();
                 this.playerClient.Close();
-                this.readThread.Join();
             }
             catch
             {
