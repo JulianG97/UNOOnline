@@ -81,6 +81,20 @@ namespace Client
 
                     this.WaitForServerResponse();
 
+                    if (validAction == true)
+                    {
+                        this.DisplayWaitingScreen();
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine();
+                        Console.WriteLine("The game couldn't be created!");
+                        Console.WriteLine("Press any key to return to the main menu...");
+
+                        Console.ReadKey(true);
+                    }
+
                     break;
                 }
 
@@ -187,9 +201,7 @@ namespace Client
 
                         if (this.validAction == true)
                         {
-                            Console.WriteLine("Please wait until enough players joined the game...");
-
-                            Console.ReadKey();
+                            DisplayWaitingScreen();
                         }
                         else if (this.validAction == false)
                         {
@@ -215,6 +227,18 @@ namespace Client
             Console.Clear();
 
             Menu.DisplayMainMenu();
+        }
+
+        private void DisplayWaitingScreen()
+        {
+            Menu.DisplayGameHeader();
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.WriteLine("Please wait until enough players joined the game and the game starts!");
+
+            this.WaitForServerResponse();
         }
 
         public void Start()

@@ -53,6 +53,8 @@ namespace Server
                     {
                         server.Stop();
                     }
+
+                    Environment.Exit(0);
                     break;
                 }
             }
