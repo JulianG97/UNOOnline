@@ -195,16 +195,16 @@ namespace Client
 
                         Console.Clear();
 
-                        Menu.DisplayGameHeader();
-                        Console.WriteLine();
-                        Console.ForegroundColor = ConsoleColor.White;
-
                         if (this.validAction == true)
                         {
                             DisplayWaitingScreen();
                         }
                         else if (this.validAction == false)
                         {
+                            Menu.DisplayGameHeader();
+                            Console.WriteLine();
+                            Console.ForegroundColor = ConsoleColor.White;
+
                             Console.WriteLine("The room you tried to join isn't open or already full!");
                             Console.WriteLine("Press any key to continue!");
 
