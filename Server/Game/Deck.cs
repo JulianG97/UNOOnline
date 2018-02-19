@@ -13,14 +13,29 @@ namespace Server
             set;
         }
 
-        public void AddCard()
+        public void AddCard(Card newCard)
         {
-            throw new System.NotImplementedException();
+            List<Card> newCards = new List<Card>();
+            newCards.Add(newCard);
+
+            foreach (Card card in this.Cards)
+            {
+                newCards.Add(card);
+            }
+
+            this.Cards = newCards;
         }
 
-        public void RemoveCard()
+        public Card DrawCard()
         {
-            throw new System.NotImplementedException();
+            Card card = this.Cards[0];
+            this.Cards.RemoveAt(0);
+            return card;
+        }
+
+        public void RemoveCard(Card card)
+        {
+            this.Cards.Remove(card);
         }
 
         public void Mix()

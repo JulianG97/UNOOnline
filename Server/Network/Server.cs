@@ -167,9 +167,10 @@ namespace Server
 
         private void StartGame(Game game)
         {
+            game.PrepareGameStart();
+
             foreach (Player player in game.Players)
             {
-                game.PrepareGameStart();
                 player.NetworkManager.Send(ProtocolManager.GameStart(player.PlayerID.ToString()));
             }
         }
