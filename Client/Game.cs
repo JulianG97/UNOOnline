@@ -85,8 +85,9 @@ namespace Client
 
         public void JoinGame()
         {
+            this.networkManager.Start();
+            string[] roomArray = null;
             this.networkManager.Send(ProtocolManager.RequestRooms());
-            string[] roomArray = this.roomList.Split('-');
             int position = 0;
 
             while (true)
@@ -102,9 +103,13 @@ namespace Client
                 {
                     Console.WriteLine("There aren't any rooms open to join!");
                     Console.WriteLine("Please create a new game...");
+
+                    Console.ReadKey(true);
                 }
                 else
                 {
+                    roomArray = this.roomList.Split('-');
+
                     for (int i = 0; i < roomArray.Length; i += 3)
                     {
                         if (i == position * 3)
@@ -120,12 +125,16 @@ namespace Client
                     }
                 }
 
+                this.networkManager.Stop();
+
                 ConsoleKeyInfo cki = Console.ReadKey(true);
 
                 if (cki.Key == ConsoleKey.R)
                 {
+                    this.networkManager.Start();
                     this.networkManager.Send(ProtocolManager.RequestRooms());
                     roomArray = this.roomList.Split('-');
+                    this.networkManager.Stop();
                 }
                 else if (cki.Key == ConsoleKey.E)
                 {
@@ -224,31 +233,31 @@ namespace Client
         {
             if (args.Protocol != null)
             {
-                if (args.Protocol.Type == ProtocolTypes.OK)
+                if (args.Protocol.Type.SequenceEqual(ProtocolTypes.OK))
                 {
                     this.validAction = true;
                 }
-                else if (args.Protocol.Type == ProtocolTypes.Invalid)
+                else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.Invalid))
                 {
                     this.validAction = false;
                 }
-                else if (args.Protocol.Type == ProtocolTypes.GameStart)
+                else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.GameStart))
                 {
 
                 }
-                else if (args.Protocol.Type == ProtocolTypes.GameOver)
+                else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.GameOver))
                 {
 
                 }
-                else if (args.Protocol.Type == ProtocolTypes.PlayerCards)
+                else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.PlayerCards))
                 {
 
                 }
-                else if (args.Protocol.Type == ProtocolTypes.RoomList)
+                else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.RoomList))
                 {
                     this.roomList = args.Protocol.Content.ToString();
                 }
-                else if (args.Protocol.Type == ProtocolTypes.RoundInformation)
+                else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.RoundInformation))
                 {
 
                 }

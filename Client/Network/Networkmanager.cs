@@ -59,6 +59,21 @@ namespace Client
             }
         }
 
+        public void Stop()
+        {
+            try
+            {
+                this.isReading = false;
+                this.stream.Close();
+                this.client.Close();
+                this.readThread.Join();
+            }
+            catch
+            {
+
+            }
+        }
+
         public void Send(Protocol protocol)
         {
             try
@@ -90,7 +105,7 @@ namespace Client
                     byte[] buffer = new byte[1];
                     int currentByte = 0;
 
-                    while (Encoding.ASCII.GetString(buffer) != "\n")
+                    while (this.stream.DataAvailable)
                     {
                         currentByte = this.stream.Read(buffer, 0, 1);
                         receivedBytes.Add(buffer[0]);
