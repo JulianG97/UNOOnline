@@ -11,14 +11,16 @@ namespace Client
 {
     public class Game
     {
-        private bool onTurn;
         private NetworkManager networkManager;
         private bool validAction;
         private bool serverResponseReceived;
         private string roomList;
         private int playerID;
+        private int playerIDWhoIsOnTurn;
         private int lobbyID;
+        private Card lastCard;
         private List<Card> Deck;
+        private List<string> numberOfCardsOfPlayers;
         
         public Game(NetworkManager networkManager)
         {
@@ -84,6 +86,7 @@ namespace Client
                     if (validAction == true)
                     {
                         this.DisplayWaitingScreen();
+                        this.Start();
                     }
                     else
                     {
@@ -198,6 +201,7 @@ namespace Client
                         if (this.validAction == true)
                         {
                             DisplayWaitingScreen();
+                            this.Start();
                         }
                         else if (this.validAction == false)
                         {
@@ -238,27 +242,27 @@ namespace Client
 
             Console.WriteLine("Please wait until enough players joined the game and the game starts!");
 
-            this.WaitForServerResponse();
+            for (int i = 0; i < 3; i++)
+            {
+                this.WaitForServerResponse();
+            }
         }
 
         public void Start()
         {
-            ShowPlayerStats("3-7-5-13-2");
-
-            Console.ReadKey(true);
+            this.ShowPlayerStats();
+            Console.ReadKey();
         }
 
-        public void ShowPlayerStats(string playerStats)
+        public void ShowPlayerStats()
         {
-            string[] playerStatsArray = playerStats.Split('-');
-
-            for (int i = 1; i <= playerStatsArray.Length; i++)
+            for (int i = 0; i < numberOfCardsOfPlayers.Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.White;
 
                 Console.Write("Player {0} | Turn: ", i);
 
-                if (i == int.Parse(playerStatsArray[0]))
+                if (i == this.playerIDWhoIsOnTurn)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("true ");
@@ -271,7 +275,7 @@ namespace Client
 
                 Console.ForegroundColor = ConsoleColor.White;
 
-                Console.Write(" | Cards: {0}", playerStatsArray[i]);
+                Console.Write(" | Cards: {0}", numberOfCardsOfPlayers[i]);
 
                 Console.WriteLine();
             }
@@ -308,7 +312,7 @@ namespace Client
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.GameOver))
                 {
-                    this.serverResponseReceived = true;
+                    
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.PlayerCards))
                 {
@@ -319,11 +323,8 @@ namespace Client
 
                     for (int i = 0; i < cardArray.Length; i += 2)
                     {
-                        Color color;
-                        Value value;
-
-                        Enum.TryParse(cardArray[i], out color);
-                        Enum.TryParse(cardArray[i + 1], out value);
+                        Color color = (Color)Enum.Parse(typeof(Color), cardArray[i]);
+                        Value value = (Value)Enum.Parse(typeof(Value), cardArray[i + 1]);
 
                         this.Deck.Add(new Card(color, value));
                     }
@@ -337,6 +338,23 @@ namespace Client
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.RoundInformation))
                 {
+                    string roundInformation = Encoding.ASCII.GetString(args.Protocol.Content);
+                    string[] roundInformationArray = roundInformation.Split('-');
+
+                    Color color = (Color)Enum.Parse(typeof(Color), roundInformationArray[0]);
+                    Value value = (Value)Enum.Parse(typeof(Value), roundInformationArray[1]);
+
+                    this.lastCard = new Card(color, value);
+
+                    this.playerIDWhoIsOnTurn = Int32.Parse(roundInformationArray[2]);
+
+                    this.numberOfCardsOfPlayers = new List<string>();
+
+                    for (int i = 3; i < roundInformationArray.Length; i++)
+                    {
+                        this.numberOfCardsOfPlayers.Add(roundInformationArray[i]);
+                    }
+
                     this.serverResponseReceived = true;
                 }
             }
