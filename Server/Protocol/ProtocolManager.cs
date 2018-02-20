@@ -56,19 +56,19 @@ namespace Server
 
         public static Protocol RoundInformation(Card lastCard, Player playerWhoIsOnTurn, List<Player> playerList)
         {
-            char value = '\n';
+            string value = string.Empty;
 
             if (lastCard is ActionCard)
             {
                 ActionCard actionCard = (ActionCard)lastCard;
 
-                value = (char)actionCard.Type;
+                value = actionCard.Type.ToString();
             }
             else if (lastCard is NumericCard)
             {
                 NumericCard numericCard = (NumericCard)lastCard;
 
-                value = (char)numericCard.Number;
+                value = numericCard.Number.ToString();
             }
 
             string amountOfPlayerCards = string.Empty;
@@ -93,19 +93,19 @@ namespace Server
 
             foreach (Card card in player.Deck.Cards)
             {
-                char value = '\n';
+                string value = string.Empty;
 
                 if (card is ActionCard)
                 {
                     ActionCard actionCard = (ActionCard)card;
 
-                    value = (char)actionCard.Type;
+                    value = ((char)actionCard.Type).ToString();
                 }
                 else if (card is NumericCard)
                 {
                     NumericCard numericCard = (NumericCard)card;
 
-                    value = (char)numericCard.Number;
+                    value = numericCard.Number.ToString();
                 }
 
                 playerCards += (char)card.Color + "-" + value;
