@@ -13,12 +13,17 @@ namespace Server
         private TcpListener listener;
         private Thread listenerThread;
         private List<Game> games;
-        private int nextGameID = 1;
+        private int nextGameID;
 
         public bool isRunning
         {
             get;
             private set;
+        }
+
+        public Server()
+        {
+            this.nextGameID = 1;
         }
 
         public void Start()
@@ -171,7 +176,7 @@ namespace Server
 
             foreach (Player player in game.Players)
             {
-                player.NetworkManager.Send(ProtocolManager.GameStart(player.PlayerID.ToString()));
+                player.NetworkManager.Send(ProtocolManager.GameStart(game.GameID.ToString(), player.PlayerID.ToString()));
             }
         }
 

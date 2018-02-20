@@ -11,12 +11,14 @@ namespace Client
 {
     public class Game
     {
-        private int players;
         private bool onTurn;
         private NetworkManager networkManager;
         private bool validAction;
         private bool serverResponseReceived;
         private string roomList;
+        private int playerID;
+        private int lobbyID;
+        private List<Card> Deck;
         
         public Game(NetworkManager networkManager)
         {
@@ -72,12 +74,10 @@ namespace Client
                 }
                 else if (cki.Key == ConsoleKey.Enter)
                 {
-                    this.players = amountOfPlayers;
-
                     Console.Clear();
 
                     this.networkManager.Start();
-                    this.networkManager.Send(ProtocolManager.CreateGame(this.players.ToString()));
+                    this.networkManager.Send(ProtocolManager.CreateGame(amountOfPlayers.ToString()));
 
                     this.WaitForServerResponse();
 
@@ -252,7 +252,7 @@ namespace Client
         {
             string[] playerStatsArray = playerStats.Split('-');
 
-            for (int i = 1; i <= this.players; i++)
+            for (int i = 1; i <= playerStatsArray.Length; i++)
             {
                 Console.ForegroundColor = ConsoleColor.White;
 
@@ -293,7 +293,18 @@ namespace Client
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.GameStart))
                 {
-                    this.serverResponseReceived = true;
+                    int lobbyID;
+                    int playerID;
+
+                    bool isInteger = int.TryParse(Encoding.ASCII.GetString(new[] { args.Protocol.Content[0] }), out lobbyID);
+                    bool isInteger2 = int.TryParse(Encoding.ASCII.GetString(new[] { args.Protocol.Content[2] }), out playerID);
+
+                    if (isInteger == true && isInteger2 == true)
+                    {
+                        this.lobbyID = lobbyID;
+                        this.playerID = playerID;
+                        this.serverResponseReceived = true;
+                    }
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.GameOver))
                 {
@@ -301,6 +312,22 @@ namespace Client
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.PlayerCards))
                 {
+                    this.Deck = new List<Card>();
+
+                    string cards = Encoding.ASCII.GetString(args.Protocol.Content);
+                    string[] cardArray = cards.Split('-');
+
+                    for (int i = 0; i < cardArray.Length; i += 2)
+                    {
+                        Color color;
+                        Value value;
+
+                        Enum.TryParse(cardArray[i], out color);
+                        Enum.TryParse(cardArray[i + 1], out value);
+
+                        this.Deck.Add(new Card(color, value));
+                    }
+
                     this.serverResponseReceived = true;
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.RoomList))

@@ -42,9 +42,9 @@ namespace Server
             return protocol;
         }
 
-        public static Protocol GameStart(string playerID)
+        public static Protocol GameStart(string gameID, string playerID)
         {
-            Protocol protocol = new Protocol(ProtocolTypes.GameStart, Encoding.ASCII.GetBytes(playerID));
+            Protocol protocol = new Protocol(ProtocolTypes.GameStart, Encoding.ASCII.GetBytes(gameID + "-" + playerID));
             return protocol;
         }
 

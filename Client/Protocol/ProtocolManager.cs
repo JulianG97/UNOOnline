@@ -32,9 +32,9 @@ namespace Client
             return protocol;
         }
 
-        public static Protocol SetCard(string cardColor, string cardValue, string unoYesOrNo)
+        public static Protocol SetCard(string gameID, string playerID, string cardColor, string cardValue, string unoYesOrNo)
         {
-            Protocol protocol = new Protocol(ProtocolTypes.SetCard, Encoding.ASCII.GetBytes(cardColor + "-" + cardValue + "-" + unoYesOrNo));
+            Protocol protocol = new Protocol(ProtocolTypes.SetCard, Encoding.ASCII.GetBytes(gameID + "-" + playerID + "-" + cardColor + "-" + cardValue + "-" + unoYesOrNo));
             return protocol;
         }
     }
