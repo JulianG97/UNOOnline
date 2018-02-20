@@ -252,6 +252,7 @@ namespace Client
         {
             Console.Clear();
             this.ShowPlayerStats();
+            Console.ReadKey();
         }
 
         public void ShowPlayerStats()
@@ -300,8 +301,10 @@ namespace Client
                     int lobbyID;
                     int playerID;
 
-                    bool isInteger = int.TryParse(Encoding.ASCII.GetString(new[] { args.Protocol.Content[0] }), out lobbyID);
-                    bool isInteger2 = int.TryParse(Encoding.ASCII.GetString(new[] { args.Protocol.Content[2] }), out playerID);
+                    string[] gameStartArray = (Encoding.ASCII.GetString(args.Protocol.Content)).Split('-');
+
+                    bool isInteger = int.TryParse(gameStartArray[0], out lobbyID);
+                    bool isInteger2 = int.TryParse(gameStartArray[1], out playerID);
 
                     if (isInteger == true && isInteger2 == true)
                     {
