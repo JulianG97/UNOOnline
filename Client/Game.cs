@@ -250,19 +250,19 @@ namespace Client
 
         public void Start()
         {
+            Console.Clear();
             this.ShowPlayerStats();
-            Console.ReadKey();
         }
 
         public void ShowPlayerStats()
         {
-            for (int i = 0; i < numberOfCardsOfPlayers.Count; i++)
+            for (int i = 0, playerID = 1; i < numberOfCardsOfPlayers.Count; i++, playerID++)
             {
                 Console.ForegroundColor = ConsoleColor.White;
 
-                Console.Write("Player {0} | Turn: ", i);
+                Console.Write("Player {0} | Turn: ", playerID);
 
-                if (i == this.playerIDWhoIsOnTurn)
+                if (playerID == this.playerIDWhoIsOnTurn)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("true ");
@@ -321,10 +321,17 @@ namespace Client
                     string cards = Encoding.ASCII.GetString(args.Protocol.Content);
                     string[] cardArray = cards.Split('-');
 
+                    char[] cardCharArray = new char[cardArray.Length];
+
+                    for (int i = 0; i < cardArray.Length; i++)
+                    {
+                        cardCharArray[i] = Convert.ToChar(cardArray[i]);
+                    }
+
                     for (int i = 0; i < cardArray.Length; i += 2)
                     {
-                        Color color = (Color)Enum.Parse(typeof(Color), cardArray[i]);
-                        Value value = (Value)Enum.Parse(typeof(Value), cardArray[i + 1]);
+                        Color color = (Color)cardCharArray[i];
+                        Value value = (Value)cardCharArray[i + 1];
 
                         this.Deck.Add(new Card(color, value));
                     }
@@ -341,8 +348,15 @@ namespace Client
                     string roundInformation = Encoding.ASCII.GetString(args.Protocol.Content);
                     string[] roundInformationArray = roundInformation.Split('-');
 
-                    Color color = (Color)Enum.Parse(typeof(Color), roundInformationArray[0]);
-                    Value value = (Value)Enum.Parse(typeof(Value), roundInformationArray[1]);
+                    char[] roundInformationCharArray = new char[roundInformationArray.Length];
+
+                    for (int i = 0; i < roundInformationArray.Length; i++)
+                    {
+                        roundInformationCharArray[i] = Convert.ToChar(roundInformationArray[i]);
+                    }
+
+                    Color color = (Color)roundInformationCharArray[0];
+                    Value value = (Value)roundInformationCharArray[1];
 
                     this.lastCard = new Card(color, value);
 
