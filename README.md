@@ -18,11 +18,11 @@ An console implementation of the classic card game UNO with online multiplayer w
 | RR | Request Rooms | - | 0 (+ 5) | Client requests room list from the server |
 | OK | OK | - | 0 (+ 5) | Server verifies client request |
 | IN | Invalid | - | 0 (+ 5) | Server declines client request |
-| GS | Game Start | PlayerID | 1 (+ 5) | Server sends game start with player ID to all clients of a game |
+| GS | Game Start | LobbyID-PlayerID | 3 (+ 5) | Server sends game start with lobby ID and player ID to all clients of a game |
 | IA | Is Alive | - | 0 (+ 5) | Server sends is alive to client and client responses |
 | RI | Round Information | LastCardColor-LastCardValue-PlayerWhoIsOnTurn-Player1AmountOfCards-Player2AmountOfCards-... | 9-13 (+ 5) | Information sent every round from the server to the client |
 | PC | Player Cards | Card1Color-Card1Value-Card2Color-Card2Value-... | n (+ 5) | Cards of the player sent from the server to the client when game starts or player is on turn |
-| SC | Set Card | CardColor-CardValue-UnoYesOrNo | 5 (+ 5) | Card set by the player sent from the client to the server. UnoYesOrNo = 0 if player didn't call UNO; 1 if player call UNO |
+| SC | Set Card | LobbyID-PlayerID-CardColor-CardValue-UnoYesOrNo | 9 (+ 5) | Card set by the player sent from the client to the server. UnoYesOrNo = 0 if player didn't call UNO; 1 if player call UNO |
 | GO | Game Over | PlayerID | 1 (+ 5) | Game end with winner ID sent from the server to the client when game is over |
 
 ### Card Protocol ###
