@@ -286,7 +286,7 @@ namespace Client
             {
                 if (i == selectedCard)
                 {
-                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
                 }
 
                 this.Deck[i].Draw(positionX, this.numberOfCardsOfPlayers.Count + 11);
