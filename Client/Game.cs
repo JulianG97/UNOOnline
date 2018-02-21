@@ -282,7 +282,7 @@ namespace Client
 
         public void DisplayCards(int positionStart, int positionEnd, int selectedCard)
         {
-            for (int i = positionStart, positionX = 5; i < positionEnd; positionStart++, positionX += 8)
+            for (int i = positionStart, positionX = 5; i < positionEnd; i++, positionX += 8)
             {
                 if (i == selectedCard)
                 {
