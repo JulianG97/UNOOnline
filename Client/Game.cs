@@ -274,9 +274,53 @@ namespace Client
 
         private void SetCard()
         {
+            int position = 0;
+            int positionStart = 0;
+            int positionEnd;
+
+            if (this.Deck.Count > 5)
+            {
+                positionEnd = 4;
+            }
+            else
+            {
+                positionEnd = this.Deck.Count - 1;
+            }
+
             while (true)
             {
+                DisplayCards(positionStart, positionEnd, position);
 
+                ConsoleKeyInfo cki = Console.ReadKey(true);
+
+                if (cki.Key == ConsoleKey.RightArrow)
+                {
+                    if (position + 1 == this.Deck.Count)
+                    { }
+                    else if (position + 1 > positionEnd)
+                    {
+                        positionStart++;
+                        positionEnd++;
+                    }
+                }
+                else if (cki.Key == ConsoleKey.LeftArrow)
+                {
+                    if (position - 1 < 0)
+                    { }
+                    else if (position - 1 < positionStart)
+                    {
+                        positionStart--;
+                        positionEnd--;
+                    }
+                }
+                else if (cki.Key == ConsoleKey.U)
+                {
+
+                }
+                else if (cki.Key == ConsoleKey.Enter)
+                {
+
+                }
             }
         }
 
@@ -298,6 +342,17 @@ namespace Client
                     Console.WriteLine(" \\_/ ");
 
                     Console.ResetColor();
+                }
+                else
+                {
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 9);
+                    Console.WriteLine("     ");
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 10);
+                    Console.WriteLine("     ");
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 11);
+                    Console.WriteLine("     ");
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 12);
+                    Console.WriteLine("     ");
                 }
 
                 this.Deck[i].Draw(positionX, this.numberOfCardsOfPlayers.Count + 13);
