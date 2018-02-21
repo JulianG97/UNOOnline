@@ -132,6 +132,8 @@ namespace Server
             else
             {
                 networkManager.Send(ProtocolManager.OK());
+
+                Console.WriteLine("{0} created a new game (GameID: {1})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID);
             }
         }
 
@@ -149,6 +151,8 @@ namespace Server
                         game.JoinedPlayers++;
                         gameFound = true;
                         networkManager.Send(ProtocolManager.OK());
+
+                        Console.WriteLine("{0} has joined a game (GameID: {1}, PlayerID: {2})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID, game.JoinedPlayers);
 
                         if (game.JoinedPlayers == game.PlayersNeeded)
                         {
@@ -178,6 +182,8 @@ namespace Server
             {
                 player.NetworkManager.Send(ProtocolManager.GameStart(game.GameID.ToString(), player.PlayerID.ToString()));
             }
+
+            Console.WriteLine("A game has started (GameID: {0})!", game.GameID);
         }
 
         private void SendRoomList(NetworkManager networkManager)

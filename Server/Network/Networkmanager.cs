@@ -11,7 +11,6 @@ namespace Server
 {
     public class NetworkManager
     {
-        private TcpClient playerClient;
         private NetworkStream playerStream;
         private Thread readThread;
         private bool isReading;
@@ -21,14 +20,20 @@ namespace Server
 
         public NetworkManager(TcpClient playerClient)
         {
-            this.playerClient = playerClient;
+            this.PlayerClient = playerClient;
+        }
+
+        public TcpClient PlayerClient
+        {
+            get;
+            private set;
         }
 
         public void Start()
         {
             try
             {
-                this.playerStream = this.playerClient.GetStream();
+                this.playerStream = this.PlayerClient.GetStream();
                 this.readThread = new Thread(this.Read);
                 this.isReading = true;
                 readThread.Start();
@@ -45,7 +50,7 @@ namespace Server
             {
                 this.isReading = false;
                 this.playerStream.Close();
-                this.playerClient.Close();
+                this.PlayerClient.Close();
             }
             catch
             {
