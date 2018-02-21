@@ -340,6 +340,10 @@ namespace Client
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+            }
 
             Console.SetCursorPosition(1, numberOfCardsOfPlayers.Count + 15);
             Console.WriteLine(" /|_ ");
@@ -389,6 +393,10 @@ namespace Client
             if (positionEnd < this.Deck.Count)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
             }
 
             Console.SetCursorPosition(positionX, numberOfCardsOfPlayers.Count + 15);
