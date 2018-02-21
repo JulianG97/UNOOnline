@@ -21,6 +21,7 @@ namespace Client
         Reverse = 'R',
         Skip = 'S',
         Wild = 'C',
-        WildDrawFour = 'F'
+        WildDrawFour = 'F',
+        Uno = 'U'
     }
 }

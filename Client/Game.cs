@@ -252,10 +252,19 @@ namespace Client
         {
             Console.Clear();
             this.ShowPlayerStats();
-            Console.ReadKey();
+            this.ShowPiles();
         }
 
-        public void ShowPlayerStats()
+        private void ShowPiles()
+        {
+            Card drawPile = new Card(Color.White, Value.Uno);
+            Card discardPile = this.lastCard;
+
+            drawPile.Draw(5, 5);
+            discardPile.Draw(5, 13);
+        }
+
+        private void ShowPlayerStats()
         {
             for (int i = 0, playerID = 1; i < numberOfCardsOfPlayers.Count; i++, playerID++)
             {
