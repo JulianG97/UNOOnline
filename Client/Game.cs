@@ -253,7 +253,7 @@ namespace Client
             Console.Clear();
             this.ShowPlayerStats();
             this.ShowPiles();
-            this.DisplayCards(0, 4, 0);
+            this.DisplayCards(0, 5, 3);
 
             Console.ReadKey();
         }
@@ -286,10 +286,17 @@ namespace Client
             {
                 if (i == selectedCard)
                 {
-                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 11);
+                    Console.WriteLine("  _  ");
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 12);
+                    Console.WriteLine("_| |_");
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 13);
+                    Console.WriteLine("\\   /");
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 14);
+                    Console.WriteLine(" \\ / ");
                 }
 
-                this.Deck[i].Draw(positionX, this.numberOfCardsOfPlayers.Count + 11);
+                this.Deck[i].Draw(positionX, this.numberOfCardsOfPlayers.Count + 15);
 
                 Console.ResetColor();
             }
