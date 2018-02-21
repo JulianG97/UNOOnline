@@ -297,7 +297,7 @@ namespace Client
                 {
                     if (position + 1 == this.Deck.Count)
                     { }
-                    else if (position + 1 > positionEnd)
+                    else if (position + 1 > positionEnd - 1)
                     {
                         positionStart++;
                         positionEnd++;
