@@ -253,7 +253,6 @@ namespace Client
             Console.Clear();
             this.ShowPlayerStats();
             this.ShowPiles();
-            this.DisplayCards(0, 5, 3);
             this.SetCard();
 
             Console.ReadKey();
@@ -303,6 +302,10 @@ namespace Client
                         positionStart++;
                         positionEnd++;
                     }
+                    else
+                    {
+                        position++;
+                    }
                 }
                 else if (cki.Key == ConsoleKey.LeftArrow)
                 {
@@ -312,6 +315,10 @@ namespace Client
                     {
                         positionStart--;
                         positionEnd--;
+                    }
+                    else
+                    {
+                        position--;
                     }
                 }
                 else if (cki.Key == ConsoleKey.U)
