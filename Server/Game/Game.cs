@@ -47,6 +47,7 @@ namespace Server
             this.SetDefaultDeck();
             this.drawPile.Mix();
             this.ServeCards();
+            this.MixUntilValidFirstCard();
             this.discardPile = new Deck();
             this.discardPile.Cards = new List<Card>();
             this.discardPile.AddCard(drawPile.DrawCard());
@@ -67,6 +68,19 @@ namespace Server
                 }
 
                 player.NetworkManager.Send(ProtocolManager.PlayerCards(player));
+            }
+        }
+
+        private void MixUntilValidFirstCard()
+        {
+            while (true)
+            {
+                if (drawPile.Cards[0].Color != Color.Wild)
+                {
+                    break;
+                }
+
+                drawPile.Mix();
             }
         }
 
