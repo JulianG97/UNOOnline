@@ -133,7 +133,7 @@ namespace Server
             {
                 networkManager.Send(ProtocolManager.OK());
 
-                Console.WriteLine("{0} created a new game (GameID: {1})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID);
+                Console.WriteLine("{0} created a new game (GameID: {1}, Players: {2}/{3})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID, game.JoinedPlayers, game.PlayersNeeded);
             }
         }
 
@@ -152,7 +152,7 @@ namespace Server
                         gameFound = true;
                         networkManager.Send(ProtocolManager.OK());
 
-                        Console.WriteLine("{0} has joined a game (GameID: {1}, PlayerID: {2})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID, game.JoinedPlayers);
+                        Console.WriteLine("{0} has joined a game (GameID: {1}, PlayerID: {2}, Players: {3}/{4})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID, game.JoinedPlayers, game.JoinedPlayers, game.PlayersNeeded);
 
                         if (game.JoinedPlayers == game.PlayersNeeded)
                         {
@@ -183,7 +183,7 @@ namespace Server
                 player.NetworkManager.Send(ProtocolManager.GameStart(game.GameID.ToString(), player.PlayerID.ToString()));
             }
 
-            Console.WriteLine("A game has started (GameID: {0})!", game.GameID);
+            Console.WriteLine("A game has started (GameID: {0}, Players: {1}/{2})!", game.GameID, game.JoinedPlayers, game.PlayersNeeded);
         }
 
         private void SendRoomList(NetworkManager networkManager)
