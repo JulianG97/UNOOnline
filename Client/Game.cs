@@ -260,8 +260,13 @@ namespace Client
             Card drawPile = new Card(Color.White, Value.Uno);
             Card discardPile = this.lastCard;
 
-            drawPile.Draw(5, 5);
-            discardPile.Draw(5, 13);
+            Console.SetCursorPosition(5, this.numberOfCardsOfPlayers.Count + 2);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(" DRAW   DISCARD");
+            Console.ResetColor();
+
+            drawPile.Draw(5, this.numberOfCardsOfPlayers.Count + 3);
+            discardPile.Draw(13, this.numberOfCardsOfPlayers.Count + 3);
         }
 
         private void ShowPlayerStats()

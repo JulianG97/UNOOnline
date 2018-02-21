@@ -26,7 +26,7 @@ namespace Client
             private set;
         }
 
-        public void Draw(int positionY, int positionX)
+        public void Draw(int positionX, int positionY)
         {
             switch (this.Color)
             {
