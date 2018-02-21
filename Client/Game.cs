@@ -336,7 +336,14 @@ namespace Client
 
         public void DisplayCards(int positionStart, int positionEnd, int selectedCard)
         {
-            for (int i = positionStart, positionX = 5; i < positionEnd; i++, positionX += 8)
+            Console.SetCursorPosition(5, numberOfCardsOfPlayers.Count + 10);
+            Console.WriteLine(" /|_ ");
+            Console.SetCursorPosition(5, numberOfCardsOfPlayers.Count + 11);
+            Console.WriteLine("|  _|");
+            Console.SetCursorPosition(5, numberOfCardsOfPlayers.Count + 12);
+            Console.WriteLine(" \\|  ");
+
+            for (int i = positionStart, positionX = 11; i < positionEnd; i++, positionX += 8)
             {
                 if (i == selectedCard)
                 {
