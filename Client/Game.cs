@@ -336,12 +336,19 @@ namespace Client
 
         public void DisplayCards(int positionStart, int positionEnd, int selectedCard)
         {
+            if (positionStart > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+            }
+
             Console.SetCursorPosition(1, numberOfCardsOfPlayers.Count + 15);
             Console.WriteLine(" /|_ ");
             Console.SetCursorPosition(1, numberOfCardsOfPlayers.Count + 16);
             Console.WriteLine("|  _|");
             Console.SetCursorPosition(1, numberOfCardsOfPlayers.Count + 17);
             Console.WriteLine(" \\|  ");
+
+            Console.ResetColor();
 
             for (int i = positionStart, positionX = 7; i < positionEnd; i++, positionX += 8)
             {
