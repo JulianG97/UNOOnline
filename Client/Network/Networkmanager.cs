@@ -120,7 +120,10 @@ namespace Client
                         receivedBytes.Add(buffer[0]);
                     }
 
-                    this.FireOnDataReceived(receivedBytes.ToArray());
+                    if (receivedBytes != null)
+                    {
+                        this.FireOnDataReceived(receivedBytes.ToArray());
+                    }
                 }
                 catch
                 {
