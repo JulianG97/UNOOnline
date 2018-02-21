@@ -62,7 +62,7 @@ namespace Server
             {
                 ActionCard actionCard = (ActionCard)lastCard;
 
-                value = actionCard.Type.ToString();
+                value = ((char)actionCard.Type).ToString();
             }
             else if (lastCard is NumericCard)
             {
