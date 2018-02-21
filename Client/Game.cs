@@ -253,6 +253,8 @@ namespace Client
             Console.Clear();
             this.ShowPlayerStats();
             this.ShowPiles();
+
+            Console.ReadKey();
         }
 
         private void ShowPiles()
