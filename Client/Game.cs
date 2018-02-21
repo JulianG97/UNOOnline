@@ -286,17 +286,17 @@ namespace Client
             {
                 if (i == selectedCard)
                 {
-                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 11);
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 9);
                     Console.WriteLine("  _  ");
-                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 12);
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 10);
                     Console.WriteLine("_| |_");
-                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 13);
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 11);
                     Console.WriteLine("\\   /");
-                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 14);
-                    Console.WriteLine(" \\ / ");
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 12);
+                    Console.WriteLine(" \\_/ ");
                 }
 
-                this.Deck[i].Draw(positionX, this.numberOfCardsOfPlayers.Count + 15);
+                this.Deck[i].Draw(positionX, this.numberOfCardsOfPlayers.Count + 13);
 
                 Console.ResetColor();
             }
