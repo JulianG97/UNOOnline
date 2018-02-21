@@ -286,6 +286,8 @@ namespace Client
             {
                 if (i == selectedCard)
                 {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+
                     Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 9);
                     Console.WriteLine("  _  ");
                     Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 10);
@@ -294,6 +296,8 @@ namespace Client
                     Console.WriteLine("\\   /");
                     Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 12);
                     Console.WriteLine(" \\_/ ");
+
+                    Console.ResetColor();
                 }
 
                 this.Deck[i].Draw(positionX, this.numberOfCardsOfPlayers.Count + 13);
