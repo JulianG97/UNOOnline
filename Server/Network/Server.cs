@@ -34,7 +34,7 @@ namespace Server
             listenerThread.Start();
             this.isRunning = true;
 
-            Console.WriteLine("The server has been successfully started!");
+            Console.WriteLine("The server was started successfully!");
         }
 
         public void StartListening()
@@ -69,7 +69,7 @@ namespace Server
             // Stop all connected network managers
             this.listener.Stop();
             this.isRunning = false;
-            Console.WriteLine("The server has been successfully stopped!");
+            Console.WriteLine("The server was stopped successfully!");
         }
 
         private void ConnectionLost(object sender, EventArgs args)
@@ -152,7 +152,7 @@ namespace Server
                         gameFound = true;
                         networkManager.Send(ProtocolManager.OK());
 
-                        Console.WriteLine("{0} has joined a game (GameID: {1}, PlayerID: {2}, Players: {3}/{4})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID, game.JoinedPlayers, game.JoinedPlayers, game.PlayersNeeded);
+                        Console.WriteLine("{0} joined a game (GameID: {1}, PlayerID: {2}, Players: {3}/{4})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID, game.JoinedPlayers, game.JoinedPlayers, game.PlayersNeeded);
 
                         if (game.JoinedPlayers == game.PlayersNeeded)
                         {
@@ -183,7 +183,7 @@ namespace Server
                 player.NetworkManager.Send(ProtocolManager.GameStart(game.GameID.ToString(), player.PlayerID.ToString()));
             }
 
-            Console.WriteLine("A game has started (GameID: {0}, Players: {1}/{2})!", game.GameID, game.JoinedPlayers, game.PlayersNeeded);
+            Console.WriteLine("A game started (GameID: {0}, Players: {1}/{2})!", game.GameID, game.JoinedPlayers, game.PlayersNeeded);
         }
 
         private void SendRoomList(NetworkManager networkManager)

@@ -299,7 +299,6 @@ namespace Client
                     { }
                     else if (position + 1 > positionEnd)
                     {
-                        position++;
                         positionStart++;
                         positionEnd++;
                     }
@@ -314,7 +313,6 @@ namespace Client
                     { }
                     else if (position - 1 < positionStart)
                     {
-                        position--;
                         positionStart--;
                         positionEnd--;
                     }
