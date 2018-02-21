@@ -263,13 +263,13 @@ namespace Client
             Card drawPile = new Card(Color.White, Value.Uno);
             Card discardPile = this.lastCard;
 
-            Console.SetCursorPosition(5, this.numberOfCardsOfPlayers.Count + 2);
+            Console.SetCursorPosition(8, this.numberOfCardsOfPlayers.Count + 2);
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(" DRAW   DISCARD");
+            Console.Write("DRAW   DISCARD");
             Console.ResetColor();
 
-            drawPile.Draw(5, this.numberOfCardsOfPlayers.Count + 3);
-            discardPile.Draw(13, this.numberOfCardsOfPlayers.Count + 3);
+            drawPile.Draw(7, this.numberOfCardsOfPlayers.Count + 3);
+            discardPile.Draw(15, this.numberOfCardsOfPlayers.Count + 3);
         }
 
         private void SetCard()
