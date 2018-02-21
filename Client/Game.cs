@@ -350,7 +350,9 @@ namespace Client
 
             Console.ResetColor();
 
-            for (int i = positionStart, positionX = 7; i < positionEnd; i++, positionX += 8)
+            int positionX = 7;
+
+            for (int i = positionStart; i < positionEnd; i++, positionX += 8)
             {
                 if (i == selectedCard)
                 {
@@ -383,6 +385,20 @@ namespace Client
 
                 Console.ResetColor();
             }
+
+            if (positionEnd < this.Deck.Count - 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+            }
+
+            Console.SetCursorPosition(positionX + 9, numberOfCardsOfPlayers.Count + 15);
+            Console.WriteLine(" _|\\ ");
+            Console.SetCursorPosition(positionX + 9, numberOfCardsOfPlayers.Count + 16);
+            Console.WriteLine("|_  |");
+            Console.SetCursorPosition(positionX + 9, numberOfCardsOfPlayers.Count + 17);
+            Console.WriteLine("  |/ ");
+
+            Console.ResetColor();
         }
 
         private void ShowPlayerStats()
