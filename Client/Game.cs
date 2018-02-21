@@ -386,16 +386,16 @@ namespace Client
                 Console.ResetColor();
             }
 
-            if (positionEnd < this.Deck.Count - 1)
+            if (positionEnd < this.Deck.Count)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
             }
 
-            Console.SetCursorPosition(positionX + 9, numberOfCardsOfPlayers.Count + 15);
+            Console.SetCursorPosition(positionX, numberOfCardsOfPlayers.Count + 15);
             Console.WriteLine(" _|\\ ");
-            Console.SetCursorPosition(positionX + 9, numberOfCardsOfPlayers.Count + 16);
+            Console.SetCursorPosition(positionX, numberOfCardsOfPlayers.Count + 16);
             Console.WriteLine("|_  |");
-            Console.SetCursorPosition(positionX + 9, numberOfCardsOfPlayers.Count + 17);
+            Console.SetCursorPosition(positionX, numberOfCardsOfPlayers.Count + 17);
             Console.WriteLine("  |/ ");
 
             Console.ResetColor();
