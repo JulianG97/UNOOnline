@@ -108,7 +108,7 @@ namespace Client
                     List<byte> receivedBytes = new List<byte>();
                     byte[] buffer = new byte[1];
 
-                    while (this.stream.DataAvailable)
+                    while (true)
                     {
                         this.stream.Read(buffer, 0, 1);
 
@@ -121,7 +121,7 @@ namespace Client
                         receivedBytes.Add(buffer[0]);
                     }
 
-                    System.IO.File.AppendAllText(@"C:\Users\100322\Documents\GitHub\UnoOnline\Client\bin\Debug\log.txt", Encoding.ASCII.GetString(receivedBytes.ToArray()));
+                    //System.IO.File.AppendAllText(@"C:\Users\100322\Documents\GitHub\UnoOnline\Client\bin\Debug\log.txt", Encoding.ASCII.GetString(receivedBytes.ToArray()));
 
                     this.FireOnDataReceived(receivedBytes.ToArray());
                 }
