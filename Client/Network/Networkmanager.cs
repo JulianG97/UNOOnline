@@ -106,14 +106,13 @@ namespace Client
 
                     List<byte> receivedBytes = new List<byte>();
                     byte[] buffer = new byte[1];
-                    int currentByte = 0;
 
                     while (this.stream.DataAvailable)
                     {
-                        currentByte = this.stream.Read(buffer, 0, 1);
+                        this.stream.Read(buffer, 0, 1);
 
                         // Checks if the current byte is the last byte of a protocol
-                        if (currentByte == 33)
+                        if (buffer[0] == 33)
                         {
                             break;
                         }

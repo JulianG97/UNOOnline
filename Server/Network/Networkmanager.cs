@@ -82,14 +82,13 @@ namespace Server
 
                     List<byte> receivedBytes = new List<byte>();
                     byte[] buffer = new byte[1];
-                    int currentByte = 0;
 
                     while (this.playerStream.DataAvailable)
                     {
-                        currentByte = this.playerStream.Read(buffer, 0, 1);
+                        this.playerStream.Read(buffer, 0, 1);
 
                         // Checks if the current byte is the last byte of a protocol
-                        if (currentByte == 33)
+                        if (buffer[0] == 33)
                         {
                             break;
                         }
