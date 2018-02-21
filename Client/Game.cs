@@ -280,7 +280,7 @@ namespace Client
 
             if (this.Deck.Count > 5)
             {
-                positionEnd = 4;
+                positionEnd = 5;
             }
             else
             {
@@ -299,6 +299,7 @@ namespace Client
                     { }
                     else if (position + 1 > positionEnd - 1)
                     {
+                        position++;
                         positionStart++;
                         positionEnd++;
                     }
@@ -313,6 +314,7 @@ namespace Client
                     { }
                     else if (position - 1 < positionStart)
                     {
+                        position--;
                         positionStart--;
                         positionEnd--;
                     }
