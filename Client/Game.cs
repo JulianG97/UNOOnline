@@ -253,6 +253,7 @@ namespace Client
             Console.Clear();
             this.ShowPlayerStats();
             this.ShowPiles();
+            this.DisplayCards(0, 4, 0);
 
             Console.ReadKey();
         }
@@ -269,6 +270,29 @@ namespace Client
 
             drawPile.Draw(5, this.numberOfCardsOfPlayers.Count + 3);
             discardPile.Draw(13, this.numberOfCardsOfPlayers.Count + 3);
+        }
+
+        private void SetCard()
+        {
+            while (true)
+            {
+
+            }
+        }
+
+        public void DisplayCards(int positionStart, int positionEnd, int selectedCard)
+        {
+            for (int i = positionStart, positionX = 5; i < positionEnd; positionStart++, positionX += 8)
+            {
+                if (i == selectedCard)
+                {
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                }
+
+                this.Deck[i].Draw(positionX, this.numberOfCardsOfPlayers.Count + 11);
+
+                Console.ResetColor();
+            }
         }
 
         private void ShowPlayerStats()
