@@ -254,6 +254,7 @@ namespace Client
             this.ShowPlayerStats();
             this.ShowPiles();
             this.DisplayCards(0, 5, 3);
+            this.SetCard();
 
             Console.ReadKey();
         }
