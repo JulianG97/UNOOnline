@@ -47,13 +47,13 @@ namespace Server
             this.SetDefaultDeck();
             this.drawPile.Mix();
             this.ServeCards();
-            Thread.Sleep(100);
+            //Thread.Sleep(100);
             this.discardPile = new Deck();
             this.discardPile.Cards = new List<Card>();
             this.discardPile.AddCard(drawPile.DrawCard());
             this.playerWhoIsOnTurn = this.Players[0];
             this.SendRoundInformation();
-            Thread.Sleep(100);
+            //Thread.Sleep(100);
         }
 
         private void ServeCards()
