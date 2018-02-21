@@ -9,6 +9,7 @@ namespace Server
     public class Protocol
     {
         private byte[] header = Encoding.ASCII.GetBytes("UNO");
+        private byte[] end = Encoding.ASCII.GetBytes("!");
 
         public Protocol(byte[] type, byte[] content)
         {
@@ -52,6 +53,7 @@ namespace Server
             protocol.AddRange(this.header);
             protocol.AddRange(this.Type);
             protocol.AddRange(this.Content);
+            protocol.AddRange(this.end);
 
             return protocol.ToArray();
         }

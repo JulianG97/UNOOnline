@@ -87,6 +87,13 @@ namespace Server
                     while (this.playerStream.DataAvailable)
                     {
                         currentByte = this.playerStream.Read(buffer, 0, 1);
+
+                        // Checks if the current byte is the last byte of a protocol
+                        if (currentByte == 33)
+                        {
+                            break;
+                        }
+
                         receivedBytes.Add(buffer[0]);
                     }
 
