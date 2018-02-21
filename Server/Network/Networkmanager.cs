@@ -96,10 +96,7 @@ namespace Server
                         receivedBytes.Add(buffer[0]);
                     }
 
-                    if (receivedBytes != null)
-                    {
-                        this.FireOnDataReceived(receivedBytes.ToArray());
-                    }
+                    this.FireOnDataReceived(receivedBytes.ToArray());
                 }
                 catch
                 {
