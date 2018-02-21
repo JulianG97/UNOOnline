@@ -278,6 +278,13 @@ namespace Client
 
                 Console.Write(" | Cards: {0}", numberOfCardsOfPlayers[i]);
 
+                if (playerID == this.playerID)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+
+                    Console.Write(" (YOU)");
+                }
+
                 Console.WriteLine();
             }
         }

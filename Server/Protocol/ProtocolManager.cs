@@ -12,17 +12,23 @@ namespace Server
         {
             string roomList = string.Empty;
 
+            List<Game> gamesOpenToJoin = new List<Game>();
+
             foreach (Game game in gameList)
             {
                 if (game.JoinedPlayers < game.PlayersNeeded)
                 {
-                    roomList += game.GameID + "-" + game.JoinedPlayers + "-" + game.PlayersNeeded;
+                    gamesOpenToJoin.Add(game);
+                }
+            }
 
-                    if (game != gameList.Last())
-                    {
-                        roomList += "-";
-                    }
+            foreach (Game game in gamesOpenToJoin)
+            {
+                roomList += game.GameID + "-" + game.JoinedPlayers + "-" + game.PlayersNeeded;
 
+                if (game != gamesOpenToJoin.Last())
+                {
+                    roomList += "-";
                 }
             }
 
@@ -118,7 +124,8 @@ namespace Server
 
             Protocol protocol = new Protocol(ProtocolTypes.PlayerCards, Encoding.ASCII.GetBytes(playerCards));
             return protocol;
-;        }
+            ;
+        }
 
         public static Protocol GameOver(string playerID)
         {
