@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.IO;
 
 namespace Client
 {
@@ -119,6 +120,8 @@ namespace Client
 
                         receivedBytes.Add(buffer[0]);
                     }
+
+                    System.IO.File.AppendAllText(@"C:\Users\100322\Documents\GitHub\UnoOnline\Client\bin\Debug\log.txt", Encoding.ASCII.GetString(receivedBytes.ToArray()));
 
                     this.FireOnDataReceived(receivedBytes.ToArray());
                 }
