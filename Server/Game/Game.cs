@@ -92,7 +92,7 @@ namespace Server
                                 {
                                     if (this.CheckIfValidCard(card, player) == true)
                                     {
-                                        this.ExecuteCardEffect(card, player);
+                                        this.ExecuteCardEffect(card, this.GetNextPlayer());
                                         this.RemoveCardAfterSet(card, player);
 
                                         player.NetworkManager.Send(ProtocolManager.OK());
@@ -196,7 +196,7 @@ namespace Server
             return cardCanBePlayed;
         }
 
-        public void ExecuteCardEffect(Card card, Player player)
+        public void ExecuteCardEffect(Card card, Player playerToBeAffected)
         {
             this.discardPile.AddCard(card);
 
@@ -208,16 +208,16 @@ namespace Server
                 {
                     for (int i = 0; i < 4; i++)
                     {
-                        GetNextPlayer().Deck.AddCard(this.drawPile.DrawCard());
+                        playerToBeAffected.Deck.AddCard(this.drawPile.DrawCard());
                     }
 
-                    this.playerWhoIsOnTurn = GetNextPlayer();
+                    this.playerWhoIsOnTurn = playerToBeAffected;
                 }
                 else if (ac.Type == ActionCardType.Reverse)
                 {
                     if (this.Players.Count() == 2)
                     {
-                        this.playerWhoIsOnTurn = this.GetNextPlayer();
+                        this.playerWhoIsOnTurn = playerToBeAffected;
                     }
 
                     if (this.direction == Direction.Left)
@@ -233,14 +233,14 @@ namespace Server
                 {
                     for (int i = 0; i < 2; i++)
                     {
-                        GetNextPlayer().Deck.AddCard(this.drawPile.DrawCard());
+                        playerToBeAffected.Deck.AddCard(this.drawPile.DrawCard());
                     }
 
-                    this.playerWhoIsOnTurn = GetNextPlayer();
+                    this.playerWhoIsOnTurn = playerToBeAffected;
                 }
                 else if (ac.Type == ActionCardType.Skip)
                 {
-                    this.playerWhoIsOnTurn = GetNextPlayer();
+                    this.playerWhoIsOnTurn = playerToBeAffected;
                 }
             }
         }
