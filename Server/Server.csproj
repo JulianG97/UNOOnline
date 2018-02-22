@@ -50,6 +50,7 @@
     <Compile Include="Game\Card.cs" />
     <Compile Include="Game\Color.cs" />
     <Compile Include="Game\Deck.cs" />
+    <Compile Include="Game\Direction.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Network\Networkmanager.cs" />
     <Compile Include="Network\OnDataReceivedEventArgs.cs" />

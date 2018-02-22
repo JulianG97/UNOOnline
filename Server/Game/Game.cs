@@ -11,6 +11,7 @@ namespace Server
         private Deck drawPile;
         private Deck discardPile;
         private Player playerWhoIsOnTurn;
+        private Direction direction;
 
         public Game(int gameID, int playersNeeded)
         {
@@ -44,6 +45,7 @@ namespace Server
 
         public void PrepareGameStart()
         {
+            this.direction = Direction.Right;
             this.SetDefaultDeck();
             this.drawPile.Mix();
             this.ServeCards();
@@ -217,6 +219,36 @@ namespace Server
                 }
                 else
                 {
+                    if (ac.Type == ActionCardType.Reverse)
+                    {
+                        if (this.direction == Direction.Left)
+                        {
+                            this.direction = Direction.Right;
+                        }
+                        else if (this.direction == Direction.Right)
+                        {
+                            this.direction = Direction.Left;
+                        }
+                    }
+                    else if (ac.Type == ActionCardType.DrawTwo)
+                    {
+                        for (int i = 0; i < 2; i++)
+                        {
+                            GetNextPlayer().Deck.AddCard(this.drawPile.DrawCard());
+                        }
+                    }
+                    else if (ac.Type == ActionCardType.WildDrawFour)
+                    {
+                        for (int i = 0; i < 4; i++)
+                        {
+                            GetNextPlayer().Deck.AddCard(this.drawPile.DrawCard());
+                        }
+                    }
+                    else if (ac.Type == ActionCardType.Skip)
+                    {
+                        this.playerWhoIsOnTurn = GetNextPlayer();
+                    }
+
                     player.Deck.RemoveCard(card);
                 }
             }
@@ -265,16 +297,39 @@ namespace Server
             }
         }
 
+        private Player GetNextPlayer()
+        {
+            Player player = null;
+
+            if (this.direction == Direction.Right)
+            {
+                if (this.playerWhoIsOnTurn.PlayerID + 1 > this.Players.Count)
+                {
+                    player = this.Players[0];
+                }
+                else
+                {
+                    player = this.Players[this.playerWhoIsOnTurn.PlayerID];
+                }
+            }
+            else if (this.direction == Direction.Left)
+            {
+                if (this.playerWhoIsOnTurn.PlayerID - 1 == 0)
+                {
+                    player = this.Players[this.Players.Count() - 1];
+                }
+                else
+                {
+                    player = this.Players[this.playerWhoIsOnTurn.PlayerID - 2];
+                }
+            }
+
+            return player;
+        }
+
         private void ChangePlayerTurn()
         {
-            if (this.playerWhoIsOnTurn.PlayerID + 1 > this.Players.Count)
-            {
-                this.playerWhoIsOnTurn = this.Players[0];
-            }
-            else
-            {
-                this.playerWhoIsOnTurn = this.Players[this.playerWhoIsOnTurn.PlayerID];
-            }
+            this.playerWhoIsOnTurn = this.GetNextPlayer();
 
             SendPlayerCards();
             SendRoundInformation();
