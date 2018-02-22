@@ -111,10 +111,30 @@ namespace Server
 
             foreach (Card card in player.Deck.Cards)
             {
-                if (card == cardToCheck)
+                if (card.Color == cardToCheck.Color)
                 {
-                    playerOwnsCard = true;
-                    break;
+                    if (cardToCheck is ActionCard && card is ActionCard)
+                    {
+                        ActionCard ctc = (ActionCard)cardToCheck;
+                        ActionCard c = (ActionCard)card;
+
+                        if (ctc.Type == c.Type)
+                        {
+                            playerOwnsCard = true;
+                            break;
+                        }
+                    }
+                    else if (cardToCheck is NumericCard && card is NumericCard)
+                    {
+                        NumericCard ctc = (NumericCard)cardToCheck;
+                        NumericCard c = (NumericCard)card;
+
+                        if (ctc.Number == c.Number)
+                        {
+                            playerOwnsCard = true;
+                            break;
+                        }
+                    }
                 }
             }
 
