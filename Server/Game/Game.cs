@@ -66,9 +66,9 @@ namespace Server
                         Card card = null;
                         Color color;
 
-                        if (Enum.IsDefined(typeof(Color), (int)(setCardArray[0].ToCharArray()[0])) == true)
+                        if (Enum.IsDefined(typeof(Color), (int)(setCardArray[2].ToCharArray()[0])) == true)
                         {
-                            color = (Color)(setCardArray[0].ToCharArray()[0]);
+                            color = (Color)(setCardArray[2].ToCharArray()[0]);
 
                             if (int.TryParse(setCardArray[3], out int number) == false)
                             {
