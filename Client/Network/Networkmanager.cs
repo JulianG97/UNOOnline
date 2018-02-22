@@ -29,7 +29,7 @@ namespace Client
 
         public void Start()
         {
-            try
+            /*try
             {
                 if (!this.client.ConnectAsync(this.ipEndpoint.Address, this.ipEndpoint.Port).Wait(1000))
                 {
@@ -37,6 +37,27 @@ namespace Client
                 }
             }
             catch (Exception)
+            {
+                Console.Clear();
+
+                Menu.DisplayGameHeader();
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("The server is unreachable! Please try again later.");
+                Console.WriteLine("Press any key to return to the main menu...");
+                Console.ResetColor();
+                Console.ReadKey(true);
+
+                Console.Clear();
+
+                Menu.DisplayMainMenu();
+            }*/
+
+            try
+            {
+                this.client.Connect(this.ipEndpoint);
+            }
+            catch
             {
                 Console.Clear();
 

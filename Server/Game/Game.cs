@@ -64,9 +64,12 @@ namespace Server
                     if (player.PlayerID.ToString() == setCardArray[1])
                     {
                         Card card = null;
+                        Color color;
 
-                        if (Enum.TryParse(setCardArray[2], out Color color))
+                        if (Enum.IsDefined(typeof(Color), (int)(setCardArray[0].ToCharArray()[0])) == true)
                         {
+                            color = (Color)(setCardArray[0].ToCharArray()[0]);
+
                             if (int.TryParse(setCardArray[3], out int number) == false)
                             {
                                 if (Enum.TryParse(setCardArray[3], out ActionCardType type))
