@@ -54,6 +54,7 @@ namespace Server
             this.discardPile.Cards = new List<Card>();
             this.discardPile.AddCard(drawPile.DrawCard());
             this.playerWhoIsOnTurn = this.Players[0];
+            this.ExecuteCardEffect(this.discardPile.Cards[0], this.playerWhoIsOnTurn);
             this.SendRoundInformation();
         }
 
