@@ -46,8 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Card.cs" />
-    <Compile Include="Color.cs" />
-    <Compile Include="Game.cs" />
+    <Compile Include="Game\Color.cs" />
+    <Compile Include="Game\Game.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Network\NetworkManager.cs" />
     <Compile Include="Network\OnDataReceivedEventArgs.cs" />
@@ -56,7 +56,7 @@
     <Compile Include="Protocol\Protocol.cs" />
     <Compile Include="Protocol\ProtocolManager.cs" />
     <Compile Include="Protocol\ProtocolTypes.cs" />
-    <Compile Include="Value.cs" />
+    <Compile Include="Game\Value.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

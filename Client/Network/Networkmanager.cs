@@ -25,15 +25,26 @@ namespace Client
         {
             this.ipEndpoint = new IPEndPoint(ip, 3000);
             this.client = new TcpClient();
+            this.Connected = false;
+        }
+
+        public bool Connected
+        {
+            get;
+            private set;
         }
 
         public void Start()
         {
-            /*try
+            try
             {
                 if (!this.client.ConnectAsync(this.ipEndpoint.Address, this.ipEndpoint.Port).Wait(1000))
                 {
                     throw new TimeoutException();
+                }
+                else
+                {
+                    this.Connected = true;
                 }
             }
             catch (Exception)
@@ -50,10 +61,26 @@ namespace Client
 
                 Console.Clear();
 
-                Menu.DisplayMainMenu();
-            }*/
 
-            try
+                Menu.DisplayMainMenu();
+            }
+
+            if (this.Connected == true)
+            {
+                try
+                {
+                    this.stream = client.GetStream();
+                    this.readThread = new Thread(this.Read);
+                    this.isReading = true;
+                    readThread.Start();
+                }
+                catch
+                {
+                    this.FireOnConnectionLost();
+                }
+            }
+
+            /*try
             {
                 this.client.Connect(this.ipEndpoint);
             }
@@ -72,9 +99,9 @@ namespace Client
                 Console.Clear();
 
                 Menu.DisplayMainMenu();
-            }
+            }*/
 
-            try
+            /*try
             {
                 this.stream = client.GetStream();
                 this.readThread = new Thread(this.Read);
@@ -84,7 +111,7 @@ namespace Client
             catch
             {
                 this.FireOnConnectionLost();
-            }
+            }*/
         }
 
         public void Stop()
@@ -92,6 +119,7 @@ namespace Client
             try
             {
                 this.isReading = false;
+                this.Connected = false;
                 this.stream.Close();
                 this.client.Close();
                 this.client = new TcpClient();
