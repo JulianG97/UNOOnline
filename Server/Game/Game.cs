@@ -55,9 +55,50 @@ namespace Server
             this.SendRoundInformation();
         }
 
-        public void Start()
+        public void NewCardSet(string[] setCardArray)
         {
+            if (setCardArray.Length == 5)
+            {
+                foreach (Player player in this.Players)
+                {
+                    if (player.PlayerID.ToString() == setCardArray[1])
+                    {
+                        Card card = null;
 
+                        if (Enum.TryParse(setCardArray[2], out Color color))
+                        {
+                            if (int.TryParse(setCardArray[3], out int number) == false)
+                            {
+                                if (Enum.TryParse(setCardArray[3], out ActionCardType type))
+                                {
+                                    card = new ActionCard(color, type);
+                                }
+                            }
+                            else
+                            {
+                                card = new NumericCard(color, number);
+                            }
+
+                            if (int.TryParse(setCardArray[4], out int uno) == true)
+                            {
+                                if (uno == 0 || uno == 1)
+                                {
+                                    if (this.CheckIfValidCard(card, player) == true)
+                                    {
+                                        this.ExecuteCardEffect(card, player, uno);
+
+                                        player.NetworkManager.Send(ProtocolManager.OK());
+                                    }
+                                    else
+                                    {
+                                        player.NetworkManager.Send(ProtocolManager.Invalid());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public bool CheckIfValidCard(Card cardToCheck, Player player)
@@ -65,7 +106,7 @@ namespace Server
             bool playerOwnsCard = false;
             bool cardCanBePlayed = false;
 
-            foreach(Card card in player.Deck.Cards)
+            foreach (Card card in player.Deck.Cards)
             {
                 if (card == cardToCheck)
                 {
@@ -82,7 +123,7 @@ namespace Server
             {
                 if (cardToCheck is ActionCard)
                 {
-                    ActionCard ac= (ActionCard)cardToCheck;
+                    ActionCard ac = (ActionCard)cardToCheck;
 
                     // Checks if the card is a wild card. Then it can be always played.
                     if (ac.Type == ActionCardType.Wild || ac.Type == ActionCardType.WildDrawFour)
@@ -189,7 +230,14 @@ namespace Server
 
         private void ChangePlayerTurn()
         {
-
+            if (this.playerWhoIsOnTurn.PlayerID + 1 > this.Players.Count)
+            {
+                this.playerWhoIsOnTurn = this.Players[0];
+            }
+            else
+            {
+                this.playerWhoIsOnTurn = this.Players[this.playerWhoIsOnTurn.PlayerID + 1];
+            }
         }
 
         private void SendRoundInformation()

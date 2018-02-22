@@ -115,52 +115,12 @@ namespace Server
                     string setCardString = Encoding.ASCII.GetString(args.Protocol.Content);
                     string[] setCardArray = setCardString.Split('-');
 
-                    if (setCardArray.Length == 5)
+                    foreach (Game game in this.games)
                     {
-                        foreach (Game game in this.games)
+                        if (game.GameID.ToString() == setCardArray[0])
                         {
-                            if (game.GameID.ToString() == setCardArray[0])
-                            {
-                                foreach (Player player in game.Players)
-                                {
-                                    if (player.PlayerID.ToString() == setCardArray[1])
-                                    {
-                                        Card card = null;
-
-                                        if (Enum.TryParse(setCardArray[2], out Color color))
-                                        {
-                                            if (int.TryParse(setCardArray[3], out int number) == false)
-                                            {
-                                                if (Enum.TryParse(setCardArray[3], out ActionCardType type))
-                                                {
-                                                    card = new ActionCard(color, type);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                card = new NumericCard(color, number);
-                                            }
-
-                                            if (int.TryParse(setCardArray[4], out int uno) == true)
-                                            {
-                                                if (uno == 0 || uno == 1)
-                                                {
-                                                    if (game.CheckIfValidCard(card, player) == true)
-                                                    {
-                                                        game.ExecuteCardEffect(card, player, uno);
-
-                                                        player.NetworkManager.Send(ProtocolManager.OK());
-                                                    }
-                                                    else
-                                                    {
-                                                        player.NetworkManager.Send(ProtocolManager.Invalid());
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            game.NewCardSet(setCardArray);
+                            break;
                         }
                     }
                 }
@@ -234,8 +194,6 @@ namespace Server
                 }
 
                 Console.WriteLine("A game started (GameID: {0}, Players: {1}/{2})!", game.GameID, game.JoinedPlayers, game.PlayersNeeded);
-
-                game.Start();
             }
 
             private void SendRoomList(NetworkManager networkManager)
