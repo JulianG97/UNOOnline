@@ -54,7 +54,8 @@ namespace Server
             this.discardPile.Cards = new List<Card>();
             this.discardPile.AddCard(drawPile.DrawCard());
             this.playerWhoIsOnTurn = this.Players[0];
-            this.ExecuteCardEffect(this.discardPile.Cards[0], this.playerWhoIsOnTurn);
+            this.ExecuteCardEffect(this.discardPile.Cards[0], this.playerWhoIsOnTurn, true);
+            this.SendPlayerCards();
             this.SendRoundInformation();
         }
 
@@ -92,7 +93,7 @@ namespace Server
                                 {
                                     if (this.CheckIfValidCard(card, player) == true)
                                     {
-                                        this.ExecuteCardEffect(card, this.GetNextPlayer());
+                                        this.ExecuteCardEffect(card, this.GetNextPlayer(), false);
                                         this.RemoveCardAfterSet(card, player);
 
                                         player.NetworkManager.Send(ProtocolManager.OK());
@@ -196,7 +197,7 @@ namespace Server
             return cardCanBePlayed;
         }
 
-        public void ExecuteCardEffect(Card card, Player playerToBeAffected)
+        public void ExecuteCardEffect(Card card, Player playerToBeAffected, bool firstRound)
         {
             this.discardPile.AddCard(card);
 
@@ -211,7 +212,14 @@ namespace Server
                         playerToBeAffected.Deck.AddCard(this.drawPile.DrawCard());
                     }
 
-                    this.playerWhoIsOnTurn = playerToBeAffected;
+                    if (firstRound == true)
+                    {
+                        this.playerWhoIsOnTurn = this.GetNextPlayer();
+                    }
+                    else
+                    {
+                        this.playerWhoIsOnTurn = playerToBeAffected;
+                    }
                 }
                 else if (ac.Type == ActionCardType.Reverse)
                 {
@@ -236,11 +244,25 @@ namespace Server
                         playerToBeAffected.Deck.AddCard(this.drawPile.DrawCard());
                     }
 
-                    this.playerWhoIsOnTurn = playerToBeAffected;
+                    if (firstRound == true)
+                    {
+                        this.playerWhoIsOnTurn = this.GetNextPlayer();
+                    }
+                    else
+                    {
+                        this.playerWhoIsOnTurn = playerToBeAffected;
+                    }
                 }
                 else if (ac.Type == ActionCardType.Skip)
                 {
-                    this.playerWhoIsOnTurn = playerToBeAffected;
+                    if (firstRound == true)
+                    {
+                        this.playerWhoIsOnTurn = this.GetNextPlayer();
+                    }
+                    else
+                    {
+                        this.playerWhoIsOnTurn = playerToBeAffected;
+                    }
                 }
             }
         }
@@ -295,8 +317,6 @@ namespace Server
                 {
                     player.Deck.AddCard(this.drawPile.DrawCard());
                 }
-
-                player.NetworkManager.Send(ProtocolManager.PlayerCards(player));
             }
         }
 
