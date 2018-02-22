@@ -26,6 +26,48 @@ namespace Server
             this.Cards = newCards;
         }
 
+        public void RemoveCard(Card cardToBeRemoved)
+        {
+            int position = GetPositionOfCard(cardToBeRemoved);
+            this.Cards.RemoveAt(position);
+        }
+
+        public int GetPositionOfCard(Card cardToGetPositionOf)
+        {
+            int position = 0;
+
+            foreach (Card card in this.Cards)
+            {
+                if (card.Color == cardToGetPositionOf.Color)
+                {
+                    if (cardToGetPositionOf is ActionCard && card is ActionCard)
+                    {
+                        ActionCard ctc = (ActionCard)cardToGetPositionOf;
+                        ActionCard c = (ActionCard)card;
+
+                        if (ctc.Type == c.Type)
+                        {
+                            break;
+                        }
+                    }
+                    else if (cardToGetPositionOf is NumericCard && card is NumericCard)
+                    {
+                        NumericCard ctc = (NumericCard)cardToGetPositionOf;
+                        NumericCard c = (NumericCard)card;
+
+                        if (ctc.Number == c.Number)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                position++;
+            }
+
+            return position;
+        }
+
         public Card DrawCard()
         {
             Card card = this.Cards[0];

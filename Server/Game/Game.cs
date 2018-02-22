@@ -72,8 +72,9 @@ namespace Server
 
                             if (int.TryParse(setCardArray[3], out int number) == false)
                             {
-                                if (Enum.TryParse(setCardArray[3], out ActionCardType type))
+                                if (Enum.IsDefined(typeof(ActionCardType), (int)(setCardArray[3].ToCharArray()[0])) == true)
                                 {
+                                    ActionCardType type = (ActionCardType)(setCardArray[3].ToCharArray()[0]);
                                     card = new ActionCard(color, type);
                                 }
                             }
@@ -144,7 +145,12 @@ namespace Server
             }
             else
             {
-                if (cardToCheck is ActionCard)
+                // Checks if the last card and the card to be played have the same color.
+                if (cardToCheck.Color == this.discardPile.Cards[0].Color)
+                {
+                    cardCanBePlayed = true;
+                }
+                else if (cardToCheck is ActionCard)
                 {
                     ActionCard ac = (ActionCard)cardToCheck;
 
@@ -163,11 +169,6 @@ namespace Server
                             cardCanBePlayed = true;
                         }
                     }
-                }
-                // Checks if the last card and the card to be played have the same color.
-                else if (cardToCheck.Color == this.discardPile.Cards[0].Color)
-                {
-                    cardCanBePlayed = true;
                 }
                 // Checks if the last card is a numeric card and if it has the same number as the card to be played.
                 else if (cardToCheck is NumericCard)
@@ -208,15 +209,20 @@ namespace Server
 
                             if (ac.Type == pac.Type)
                             {
-                                player.Deck.Cards.Remove(playerCard);
+                                player.Deck.RemoveCard(playerCard);
+                                break;
                             }
                         }
                     }
                 }
+                else
+                {
+                    player.Deck.RemoveCard(card);
+                }
             }
             else
             {
-                player.Deck.Cards.Remove(card);
+                player.Deck.RemoveCard(card);
             }
 
             ChangePlayerTurn();
@@ -234,6 +240,14 @@ namespace Server
                     player.Deck.AddCard(this.drawPile.DrawCard());
                 }
 
+                player.NetworkManager.Send(ProtocolManager.PlayerCards(player));
+            }
+        }
+
+        private void SendPlayerCards()
+        {
+            foreach (Player player in this.Players)
+            {
                 player.NetworkManager.Send(ProtocolManager.PlayerCards(player));
             }
         }
@@ -259,8 +273,11 @@ namespace Server
             }
             else
             {
-                this.playerWhoIsOnTurn = this.Players[this.playerWhoIsOnTurn.PlayerID + 1];
+                this.playerWhoIsOnTurn = this.Players[this.playerWhoIsOnTurn.PlayerID];
             }
+
+            SendPlayerCards();
+            SendRoundInformation();
         }
 
         private void SendRoundInformation()
