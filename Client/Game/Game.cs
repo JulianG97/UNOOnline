@@ -549,9 +549,9 @@ namespace Client
                     string roundInformation = Encoding.ASCII.GetString(args.Protocol.Content);
                     string[] roundInformationArray = roundInformation.Split('-');
 
-                    char[] roundInformationCharArray = new char[roundInformationArray.Length];
+                    char[] roundInformationCharArray = new char[2];
 
-                    for (int i = 0; i < roundInformationArray.Length; i++)
+                    for (int i = 0; i < 2; i++)
                     {
                         roundInformationCharArray[i] = Convert.ToChar(roundInformationArray[i]);
                     }

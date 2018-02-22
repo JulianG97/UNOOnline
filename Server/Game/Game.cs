@@ -91,9 +91,12 @@ namespace Server
                                 {
                                     if (this.CheckIfValidCard(card, player) == true)
                                     {
-                                        this.ExecuteCardEffect(card, player, uno);
+                                        this.ExecuteCardEffect(card, player);
+                                        this.RemoveCardAfterSet(card, player);
 
                                         player.NetworkManager.Send(ProtocolManager.OK());
+
+                                        ChangePlayerTurn();
                                     }
                                     else
                                     {
@@ -192,7 +195,7 @@ namespace Server
             return cardCanBePlayed;
         }
 
-        public void ExecuteCardEffect(Card card, Player player, int unoYesOrNo)
+        public void ExecuteCardEffect(Card card, Player player)
         {
             this.discardPile.AddCard(card);
 
@@ -200,17 +203,56 @@ namespace Server
             {
                 ActionCard ac = (ActionCard)card;
 
+                if (ac.Type == ActionCardType.WildDrawFour)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        GetNextPlayer().Deck.AddCard(this.drawPile.DrawCard());
+                    }
+
+                    this.playerWhoIsOnTurn = GetNextPlayer();
+                }
+                else if (ac.Type == ActionCardType.Reverse)
+                {
+                    if (this.Players.Count() == 2)
+                    {
+                        this.playerWhoIsOnTurn = this.GetNextPlayer();
+                    }
+
+                    if (this.direction == Direction.Left)
+                    {
+                        this.direction = Direction.Right;
+                    }
+                    else if (this.direction == Direction.Right)
+                    {
+                        this.direction = Direction.Left;
+                    }
+                }
+                else if (ac.Type == ActionCardType.DrawTwo)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        GetNextPlayer().Deck.AddCard(this.drawPile.DrawCard());
+                    }
+
+                    this.playerWhoIsOnTurn = GetNextPlayer();
+                }
+                else if (ac.Type == ActionCardType.Skip)
+                {
+                    this.playerWhoIsOnTurn = GetNextPlayer();
+                }
+            }
+        }
+
+        private void RemoveCardAfterSet(Card card, Player player)
+        {
+            if (card is ActionCard)
+            {
+                ActionCard ac = (ActionCard)card;
+
                 // If the card to be played is a wild card a card with the same action card type gets removed from the player deck.
                 if (ac.Type == ActionCardType.Wild || ac.Type == ActionCardType.WildDrawFour)
                 {
-                    if (ac.Type == ActionCardType.WildDrawFour)
-                    {
-                        for (int i = 0; i < 4; i++)
-                        {
-                            GetNextPlayer().Deck.AddCard(this.drawPile.DrawCard());
-                        }
-                    }
-
                     foreach (Card playerCard in player.Deck.Cards)
                     {
                         if (playerCard is ActionCard)
@@ -227,43 +269,18 @@ namespace Server
                 }
                 else
                 {
-                    if (ac.Type == ActionCardType.Reverse)
-                    {
-                        if (this.Players.Count() == 2)
-                        {
-                            this.playerWhoIsOnTurn = this.GetNextPlayer();
-                        }
-
-                        if (this.direction == Direction.Left)
-                        {
-                            this.direction = Direction.Right;
-                        }
-                        else if (this.direction == Direction.Right)
-                        {
-                            this.direction = Direction.Left;
-                        }
-                    }
-                    else if (ac.Type == ActionCardType.DrawTwo)
-                    {
-                        for (int i = 0; i < 2; i++)
-                        {
-                            GetNextPlayer().Deck.AddCard(this.drawPile.DrawCard());
-                        }
-                    }
-                    else if (ac.Type == ActionCardType.Skip)
-                    {
-                        this.playerWhoIsOnTurn = GetNextPlayer();
-                    }
-
                     player.Deck.RemoveCard(card);
                 }
             }
-            else
+            else if (card is NumericCard)
             {
                 player.Deck.RemoveCard(card);
             }
+        }
 
-            ChangePlayerTurn();
+        private void CheckIfGameOver()
+        {
+
         }
 
         private void ServeCards()
