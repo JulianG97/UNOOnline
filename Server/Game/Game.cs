@@ -203,6 +203,14 @@ namespace Server
                 // If the card to be played is a wild card a card with the same action card type gets removed from the player deck.
                 if (ac.Type == ActionCardType.Wild || ac.Type == ActionCardType.WildDrawFour)
                 {
+                    if (ac.Type == ActionCardType.WildDrawFour)
+                    {
+                        for (int i = 0; i < 4; i++)
+                        {
+                            GetNextPlayer().Deck.AddCard(this.drawPile.DrawCard());
+                        }
+                    }
+
                     foreach (Card playerCard in player.Deck.Cards)
                     {
                         if (playerCard is ActionCard)
@@ -221,6 +229,11 @@ namespace Server
                 {
                     if (ac.Type == ActionCardType.Reverse)
                     {
+                        if (this.Players.Count() == 2)
+                        {
+                            this.playerWhoIsOnTurn = this.GetNextPlayer();
+                        }
+
                         if (this.direction == Direction.Left)
                         {
                             this.direction = Direction.Right;
@@ -233,13 +246,6 @@ namespace Server
                     else if (ac.Type == ActionCardType.DrawTwo)
                     {
                         for (int i = 0; i < 2; i++)
-                        {
-                            GetNextPlayer().Deck.AddCard(this.drawPile.DrawCard());
-                        }
-                    }
-                    else if (ac.Type == ActionCardType.WildDrawFour)
-                    {
-                        for (int i = 0; i < 4; i++)
                         {
                             GetNextPlayer().Deck.AddCard(this.drawPile.DrawCard());
                         }
