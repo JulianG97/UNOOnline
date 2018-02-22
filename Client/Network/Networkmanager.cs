@@ -31,9 +31,12 @@ namespace Client
         {
             try
             {
-                this.client.Connect(this.ipEndpoint);
+                if (!this.client.ConnectAsync(this.ipEndpoint.Address, this.ipEndpoint.Port).Wait(1000))
+                {
+                    throw new TimeoutException();
+                }
             }
-            catch
+            catch (Exception)
             {
                 Console.Clear();
 

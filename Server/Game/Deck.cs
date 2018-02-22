@@ -33,11 +33,6 @@ namespace Server
             return card;
         }
 
-        public void RemoveCard(Card card)
-        {
-            this.Cards.Remove(card);
-        }
-
         public void Mix()
         {
             Random random = new Random();

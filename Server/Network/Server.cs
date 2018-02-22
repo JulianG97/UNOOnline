@@ -110,85 +110,137 @@ namespace Server
                 {
                     this.SendRoomList(args.NetworkManager);
                 }
-                else
+                else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.SetCard))
                 {
-                    // Redirect to game class
-                }
-            }
-        }
+                    string setCardString = Encoding.ASCII.GetString(args.Protocol.Content);
+                    string[] setCardArray = setCardString.Split('-');
 
-        private void CreateNewGame(int amountOfPlayers, NetworkManager networkManager)
-        {
-            Game game = new Game(this.nextGameID, amountOfPlayers);
-            this.nextGameID++;
-            game.Players = new List<Player>();
-            game.Players.Add(new Player(1, networkManager));
-            this.games.Add(game);
-
-            if (amountOfPlayers < 2 || amountOfPlayers > 4)
-            {
-                networkManager.Send(ProtocolManager.Invalid());
-            }
-            else
-            {
-                networkManager.Send(ProtocolManager.OK());
-
-                Console.WriteLine("{0} created a new game (GameID: {1}, Players: {2}/{3})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID, game.JoinedPlayers, game.PlayersNeeded);
-            }
-        }
-
-        private void JoinGame(int gameID, NetworkManager networkManager)
-        {
-            bool gameFound = false;
-
-            foreach (Game game in games)
-            {
-                if (game.GameID == gameID)
-                {
-                    if (game.JoinedPlayers < game.PlayersNeeded)
+                    if (setCardArray.Length == 5)
                     {
-                        game.Players.Add(new Player(game.JoinedPlayers + 1, networkManager));
-                        game.JoinedPlayers++;
-                        gameFound = true;
-                        networkManager.Send(ProtocolManager.OK());
-
-                        Console.WriteLine("{0} joined a game (GameID: {1}, PlayerID: {2}, Players: {3}/{4})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID, game.JoinedPlayers, game.JoinedPlayers, game.PlayersNeeded);
-
-                        if (game.JoinedPlayers == game.PlayersNeeded)
+                        foreach (Game game in this.games)
                         {
-                            this.StartGame(game);
+                            if (game.GameID.ToString() == setCardArray[0])
+                            {
+                                foreach (Player player in game.Players)
+                                {
+                                    if (player.PlayerID.ToString() == setCardArray[1])
+                                    {
+                                        Card card = null;
+
+                                        if (Enum.TryParse(setCardArray[2], out Color color))
+                                        {
+                                            if (int.TryParse(setCardArray[3], out int number) == false)
+                                            {
+                                                if (Enum.TryParse(setCardArray[3], out ActionCardType type))
+                                                {
+                                                    card = new ActionCard(color, type);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                card = new NumericCard(color, number);
+                                            }
+
+                                            if (int.TryParse(setCardArray[4], out int uno) == true)
+                                            {
+                                                if (uno == 0 || uno == 1)
+                                                {
+                                                    if (game.CheckIfValidCard(card, player) == true)
+                                                    {
+                                                        game.ExecuteCardEffect(card, player, uno);
+
+                                                        player.NetworkManager.Send(ProtocolManager.OK());
+                                                    }
+                                                    else
+                                                    {
+                                                        player.NetworkManager.Send(ProtocolManager.Invalid());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
-                    else
-                    {
-                        networkManager.Send(ProtocolManager.Invalid());
-                    }
+                }
+            }
+        }
 
-                    break;
+            private void CreateNewGame(int amountOfPlayers, NetworkManager networkManager)
+            {
+                Game game = new Game(this.nextGameID, amountOfPlayers);
+                this.nextGameID++;
+                game.Players = new List<Player>();
+                game.Players.Add(new Player(1, networkManager));
+                this.games.Add(game);
+
+                if (amountOfPlayers < 2 || amountOfPlayers > 4)
+                {
+                    networkManager.Send(ProtocolManager.Invalid());
+                }
+                else
+                {
+                    networkManager.Send(ProtocolManager.OK());
+
+                    Console.WriteLine("{0} created a new game (GameID: {1}, Players: {2}/{3})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID, game.JoinedPlayers, game.PlayersNeeded);
                 }
             }
 
-            if (gameFound == false)
+            private void JoinGame(int gameID, NetworkManager networkManager)
             {
-                networkManager.Send(ProtocolManager.Invalid());
+                bool gameFound = false;
+
+                foreach (Game game in games)
+                {
+                    if (game.GameID == gameID)
+                    {
+                        if (game.JoinedPlayers < game.PlayersNeeded)
+                        {
+                            game.Players.Add(new Player(game.JoinedPlayers + 1, networkManager));
+                            game.JoinedPlayers++;
+                            gameFound = true;
+                            networkManager.Send(ProtocolManager.OK());
+
+                            Console.WriteLine("{0} joined a game (GameID: {1}, PlayerID: {2}, Players: {3}/{4})!", ((IPEndPoint)networkManager.PlayerClient.Client.RemoteEndPoint).Address.ToString(), game.GameID, game.JoinedPlayers, game.JoinedPlayers, game.PlayersNeeded);
+
+                            if (game.JoinedPlayers == game.PlayersNeeded)
+                            {
+                                this.StartGame(game);
+                            }
+                        }
+                        else
+                        {
+                            networkManager.Send(ProtocolManager.Invalid());
+                        }
+
+                        break;
+                    }
+                }
+
+                if (gameFound == false)
+                {
+                    networkManager.Send(ProtocolManager.Invalid());
+                }
             }
-        }
 
-        private void StartGame(Game game)
-        {
-            game.PrepareGameStart();
-
-            foreach (Player player in game.Players)
+            private void StartGame(Game game)
             {
-                player.NetworkManager.Send(ProtocolManager.GameStart(game.GameID.ToString(), player.PlayerID.ToString()));
+                game.PrepareGameStart();
+
+                foreach (Player player in game.Players)
+                {
+                    player.NetworkManager.Send(ProtocolManager.GameStart(game.GameID.ToString(), player.PlayerID.ToString()));
+                }
+
+                Console.WriteLine("A game started (GameID: {0}, Players: {1}/{2})!", game.GameID, game.JoinedPlayers, game.PlayersNeeded);
+
+                game.Start();
             }
 
-            Console.WriteLine("A game started (GameID: {0}, Players: {1}/{2})!", game.GameID, game.JoinedPlayers, game.PlayersNeeded);
-        }
-
-        private void SendRoomList(NetworkManager networkManager)
-        {
-            networkManager.Send(ProtocolManager.RoomList(games));
+            private void SendRoomList(NetworkManager networkManager)
+            {
+                networkManager.Send(ProtocolManager.RoomList(games));
+            }
         }
     }
-}

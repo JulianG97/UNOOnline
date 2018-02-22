@@ -55,6 +55,109 @@ namespace Server
             this.SendRoundInformation();
         }
 
+        public void Start()
+        {
+
+        }
+
+        public bool CheckIfValidCard(Card cardToCheck, Player player)
+        {
+            bool playerOwnsCard = false;
+            bool cardCanBePlayed = false;
+
+            foreach(Card card in player.Deck.Cards)
+            {
+                if (card == cardToCheck)
+                {
+                    playerOwnsCard = true;
+                    break;
+                }
+            }
+
+            if (playerOwnsCard == false)
+            {
+                cardCanBePlayed = false;
+            }
+            else
+            {
+                if (cardToCheck is ActionCard)
+                {
+                    ActionCard ac= (ActionCard)cardToCheck;
+
+                    // Checks if the card is a wild card. Then it can be always played.
+                    if (ac.Type == ActionCardType.Wild || ac.Type == ActionCardType.WildDrawFour)
+                    {
+                        cardCanBePlayed = true;
+                    }
+                    // Checks if the last card is an action card and if it has the same type as the card to be played.
+                    else if (this.discardPile.Cards[0] is ActionCard)
+                    {
+                        ActionCard lc = (ActionCard)this.discardPile.Cards[0];
+
+                        if (ac.Type == lc.Type)
+                        {
+                            cardCanBePlayed = true;
+                        }
+                    }
+                }
+                // Checks if the last card and the card to be played have the same color.
+                else if (cardToCheck.Color == this.discardPile.Cards[0].Color)
+                {
+                    cardCanBePlayed = true;
+                }
+                // Checks if the last card is a numeric card and if it has the same number as the card to be played.
+                else if (cardToCheck is NumericCard)
+                {
+                    NumericCard nc = (NumericCard)cardToCheck;
+
+                    if (this.discardPile.Cards[0] is NumericCard)
+                    {
+                        NumericCard lc = (NumericCard)this.discardPile.Cards[0];
+
+                        if (nc.Number == lc.Number)
+                        {
+                            cardCanBePlayed = true;
+                        }
+                    }
+                }
+            }
+
+            return cardCanBePlayed;
+        }
+
+        public void ExecuteCardEffect(Card card, Player player, int unoYesOrNo)
+        {
+            this.discardPile.AddCard(card);
+
+            if (card is ActionCard)
+            {
+                ActionCard ac = (ActionCard)card;
+
+                // If the card to be played is a wild card a card with the same action card type gets removed from the player deck.
+                if (ac.Type == ActionCardType.Wild || ac.Type == ActionCardType.WildDrawFour)
+                {
+                    foreach (Card playerCard in player.Deck.Cards)
+                    {
+                        if (playerCard is ActionCard)
+                        {
+                            ActionCard pac = (ActionCard)playerCard;
+
+                            if (ac.Type == pac.Type)
+                            {
+                                player.Deck.Cards.Remove(playerCard);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                player.Deck.Cards.Remove(card);
+            }
+
+            ChangePlayerTurn();
+        }
+
         private void ServeCards()
         {
             foreach (Player player in this.Players)
@@ -75,13 +178,18 @@ namespace Server
         {
             while (true)
             {
-                if (drawPile.Cards[0].Color != Color.Wild)
+                if (drawPile.Cards[0].Color != Color.White)
                 {
                     break;
                 }
 
                 drawPile.Mix();
             }
+        }
+
+        private void ChangePlayerTurn()
+        {
+
         }
 
         private void SendRoundInformation()
@@ -206,14 +314,14 @@ namespace Server
             this.drawPile.Cards.Add(new ActionCard(Color.Blue, ActionCardType.DrawTwo));
 
             // Add all wild cards to deck
-            this.drawPile.Cards.Add(new ActionCard(Color.Wild, ActionCardType.Wild));
-            this.drawPile.Cards.Add(new ActionCard(Color.Wild, ActionCardType.Wild));
-            this.drawPile.Cards.Add(new ActionCard(Color.Wild, ActionCardType.Wild));
-            this.drawPile.Cards.Add(new ActionCard(Color.Wild, ActionCardType.Wild));
-            this.drawPile.Cards.Add(new ActionCard(Color.Wild, ActionCardType.WildDrawFour));
-            this.drawPile.Cards.Add(new ActionCard(Color.Wild, ActionCardType.WildDrawFour));
-            this.drawPile.Cards.Add(new ActionCard(Color.Wild, ActionCardType.WildDrawFour));
-            this.drawPile.Cards.Add(new ActionCard(Color.Wild, ActionCardType.WildDrawFour));
+            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.Wild));
+            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.Wild));
+            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.Wild));
+            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.Wild));
+            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
+            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
+            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
+            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
         }
     }
 }

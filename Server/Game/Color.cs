@@ -11,6 +11,6 @@ namespace Server
         Blue = 'B',
         Green = 'G',
         Yellow = 'Y',
-        Wild = 'W'
+        White = 'W'
     }
 }

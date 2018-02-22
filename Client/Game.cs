@@ -250,12 +250,27 @@ namespace Client
 
         public void Start()
         {
-            Console.Clear();
-            this.ShowPlayerStats();
-            this.ShowPiles();
-            this.SetCard();
+            while (true)
+            {
+                Console.Clear();
+                this.ShowPlayerStats();
+                this.ShowPiles();
 
-            Console.ReadKey();
+                if (this.playerIDWhoIsOnTurn == this.playerID)
+                {
+                    this.SetCard();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("Player {0} is on turn! Please wait...", this.playerIDWhoIsOnTurn);
+                }
+
+                for (int i = 0; i < 2; i++)
+                {
+                    this.WaitForServerResponse();
+                }
+            }
         }
 
         private void ShowPiles()
@@ -277,6 +292,7 @@ namespace Client
             int position = 0;
             int positionStart = 0;
             int positionEnd;
+            int unoYesOrNo = 0;
 
             if (this.Deck.Count > 5)
             {
@@ -325,11 +341,23 @@ namespace Client
                 }
                 else if (cki.Key == ConsoleKey.U)
                 {
-
+                    unoYesOrNo = 1;
                 }
                 else if (cki.Key == ConsoleKey.Enter)
                 {
+                    this.networkManager.Send(ProtocolManager.SetCard(this.lobbyID.ToString(), this.playerID.ToString(), ((char)this.Deck[position].Color).ToString(), ((char)this.Deck[position].Value).ToString(), unoYesOrNo.ToString()));
 
+                    this.WaitForServerResponse();
+
+                    if (this.validAction == true)
+                    {
+                        break;
+                    }
+                    else if (this.validAction == false)
+                    {
+                        // When the client receives invalid from server he's still on turn
+                        // Set Card continues
+                    }
                 }
             }
         }
