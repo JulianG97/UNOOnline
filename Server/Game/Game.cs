@@ -136,7 +136,14 @@ namespace Server
 
                                         player.NetworkManager.Send(ProtocolManager.OK());
 
-                                        ChangePlayerTurn();
+                                        if (this.CheckIfGameOver(setCardArray[4]) == true)
+                                        {
+                                            this.GameOver();
+                                        }
+                                        else
+                                        {
+                                            ChangePlayerTurn();
+                                        }
                                     }
                                     else
                                     {
@@ -349,9 +356,24 @@ namespace Server
             }
         }
 
-        private void CheckIfGameOver()
+        private bool CheckIfGameOver(string unoYesOrNo)
         {
+            if (this.playerWhoIsOnTurn.Deck.Cards.Count == 0 && int.Parse(unoYesOrNo) == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
+        private void GameOver()
+        {
+            foreach (Player player in this.Players)
+            {
+                player.NetworkManager.Send(ProtocolManager.GameOver(this.playerWhoIsOnTurn.PlayerID.ToString()));
+            }
         }
 
         private void ServeCards()

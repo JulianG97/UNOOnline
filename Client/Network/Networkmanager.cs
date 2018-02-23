@@ -61,7 +61,6 @@ namespace Client
 
                 Console.Clear();
 
-
                 Menu.DisplayMainMenu();
             }
 

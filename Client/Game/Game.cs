@@ -16,11 +16,13 @@ namespace Client
         private bool serverResponseReceived;
         private string roomList;
         private int playerID;
+        private int winnerID;
         private int playerIDWhoIsOnTurn;
         private int lobbyID;
         private Card lastCard;
         private List<Card> Deck;
         private List<string> numberOfCardsOfPlayers;
+        private bool gameOver;
 
         public Game(NetworkManager networkManager)
         {
@@ -258,7 +260,7 @@ namespace Client
 
         public void Start()
         {
-            while (true)
+            while (this.gameOver == false)
             {
                 Console.Clear();
                 this.ShowPlayerStats();
@@ -280,6 +282,28 @@ namespace Client
                     this.WaitForServerResponse();
                 }
             }
+
+            this.GameOver();
+        }
+
+        private void GameOver()
+        {
+            Console.Clear();
+
+            Menu.DisplayGameHeader();
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.WriteLine("Game Over! Player {0} won the game!");
+            Console.WriteLine();
+            Console.WriteLine("Press any key to return to the main menu...");
+            Console.ResetColor();
+            Console.ReadKey(true);
+
+            Console.Clear();
+
+            Menu.DisplayMainMenu();
         }
 
         private void ShowPiles()
@@ -562,13 +586,10 @@ namespace Client
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.GameStart))
                 {
-                    int lobbyID;
-                    int playerID;
-
                     string[] gameStartArray = (Encoding.ASCII.GetString(args.Protocol.Content)).Split('-');
 
-                    bool isInteger = int.TryParse(gameStartArray[0], out lobbyID);
-                    bool isInteger2 = int.TryParse(gameStartArray[1], out playerID);
+                    bool isInteger = int.TryParse(gameStartArray[0], out int lobbyID);
+                    bool isInteger2 = int.TryParse(gameStartArray[1], out int playerID);
 
                     if (isInteger == true && isInteger2 == true)
                     {
@@ -579,7 +600,10 @@ namespace Client
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.GameOver))
                 {
+                    string[] gameOverArray = (Encoding.ASCII.GetString(args.Protocol.Content)).Split('-');
 
+                    this.winnerID = int.Parse(gameOverArray[0]);
+                    this.gameOver = true;
                 }
                 else if (args.Protocol.Type.SequenceEqual(ProtocolTypes.PlayerCards))
                 {
@@ -643,7 +667,7 @@ namespace Client
 
         private void WaitForServerResponse()
         {
-            while (this.serverResponseReceived == false)
+            while (this.serverResponseReceived == false && this.gameOver == false)
             { }
 
             this.serverResponseReceived = false;
