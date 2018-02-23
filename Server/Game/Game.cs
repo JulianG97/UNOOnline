@@ -47,9 +47,10 @@ namespace Server
         {
             this.direction = Direction.Right;
             this.SetDefaultDeck();
+            this.drawPile.DeckIsEmpty += this.DrawPileIsEmpty;
             this.drawPile.Mix();
             this.ServeCards();
-            this.MixUntilValidFirstCard();
+            this.MixUntilValidFirstCard(this.drawPile);
             this.discardPile = new Deck();
             this.discardPile.Cards = new List<Card>();
             this.discardPile.AddCard(drawPile.DrawCard());
@@ -57,6 +58,43 @@ namespace Server
             this.ExecuteCardEffect(this.discardPile.Cards[0], this.playerWhoIsOnTurn, true);
             this.SendPlayerCards();
             this.SendRoundInformation();
+        }
+
+        private void DrawPileIsEmpty(object sender, EventArgs args)
+        {
+            Deck newDrawPile = new Deck();
+            newDrawPile.Cards = new List<Card>();
+
+            for (int i = 1; i < this.discardPile.Cards.Count; i++)
+            {
+                newDrawPile.AddCard(this.discardPile.Cards[i]);
+            }
+
+            for (int i = 1, end = discardPile.Cards.Count; i < end; i++)
+            {
+                this.discardPile.Cards.RemoveAt(1);
+            }
+
+            foreach (Card card in newDrawPile.Cards)
+            {
+                if (card is ActionCard)
+                {
+                    ActionCard actionCard = (ActionCard)card;
+
+                    if (actionCard.Type == ActionCardType.Wild || actionCard.Type == ActionCardType.WildDrawFour)
+                    {
+                        card.Color = Color.White;
+                    }
+                }
+            }
+
+            this.MixUntilValidFirstCard(newDrawPile);
+
+
+            foreach (Card card in newDrawPile.Cards)
+            {
+                this.drawPile.Cards.Add(card);
+            }
         }
 
         public void NewCardSet(string[] setCardArray)
@@ -142,6 +180,16 @@ namespace Server
                             playerOwnsCard = true;
                             break;
                         }
+                    }
+                }
+                else if (cardToCheck is ActionCard && card is ActionCard)
+                {
+                    ActionCard ctc = (ActionCard)cardToCheck;
+                    ActionCard c = (ActionCard)card;
+
+                    if ((ctc.Type == ActionCardType.Wild && c.Type == ActionCardType.Wild) || (ctc.Type == ActionCardType.WildDrawFour && c.Type == ActionCardType.WildDrawFour))
+                    {
+                        playerOwnsCard = true;
                     }
                 }
             }
@@ -328,16 +376,16 @@ namespace Server
             }
         }
 
-        private void MixUntilValidFirstCard()
+        private void MixUntilValidFirstCard(Deck deck)
         {
             while (true)
             {
-                if (drawPile.Cards[0].Color != Color.White)
+                if (deck.Cards[0].Color != Color.White)
                 {
                     break;
                 }
 
-                drawPile.Mix();
+                deck.Mix();
             }
         }
 
@@ -375,8 +423,38 @@ namespace Server
         {
             this.playerWhoIsOnTurn = this.GetNextPlayer();
 
+            bool nextPlayerCanSetCard = false;
+
+            while (nextPlayerCanSetCard == false)
+            {
+                nextPlayerCanSetCard = this.CheckIfNextPlayerCanSetCard();
+            }
+
             SendPlayerCards();
             SendRoundInformation();
+        }
+
+        private bool CheckIfNextPlayerCanSetCard()
+        {
+            foreach (Card card in this.playerWhoIsOnTurn.Deck.Cards)
+            {
+                if (CheckIfValidCard(card, this.playerWhoIsOnTurn) == true)
+                {
+                    return true;
+                }
+            }
+
+            this.playerWhoIsOnTurn.Deck.AddCard(this.drawPile.DrawCard());
+
+            if (CheckIfValidCard(this.playerWhoIsOnTurn.Deck.Cards[0], this.playerWhoIsOnTurn) == false)
+            {
+                this.playerWhoIsOnTurn = this.GetNextPlayer();
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         private void SendRoundInformation()
@@ -407,7 +485,7 @@ namespace Server
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 6));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 6));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 7));
-            this.drawPile.Cards.Add(new NumericCard(Color.Red, 7));
+            /*this.drawPile.Cards.Add(new NumericCard(Color.Red, 7));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 8));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 8));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 9));
@@ -417,12 +495,12 @@ namespace Server
             this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.Reverse));
             this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.Reverse));
             this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.DrawTwo));
-            this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.DrawTwo));
+            this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.DrawTwo));*/
 
             // Add all yellow cards to deck
             this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 0));
             this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 1));
-            this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 1));
+            /*this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 1));
             this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 2));
             this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 2));
             this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 3));
@@ -508,7 +586,7 @@ namespace Server
             this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
             this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
             this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
-            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
+            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));*/
         }
     }
 }

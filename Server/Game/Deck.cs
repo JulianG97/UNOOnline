@@ -7,6 +7,8 @@ namespace Server
 {
     public class Deck
     {
+        public event EventHandler<EventArgs> DeckIsEmpty;
+
         public List<Card> Cards
         {
             get;
@@ -70,9 +72,25 @@ namespace Server
 
         public Card DrawCard()
         {
+            if (this.Cards.Count == 0)
+            {
+                this.FireOnDeckIsEmpty();
+
+                while (this.Cards.Count == 0)
+                { }
+            }
+
             Card card = this.Cards[0];
             this.Cards.RemoveAt(0);
             return card;
+        }
+
+        protected virtual void FireOnDeckIsEmpty()
+        {
+            if (this.DeckIsEmpty != null)
+            {
+                this.DeckIsEmpty(this, new EventArgs());
+            }
         }
 
         public void Mix()
@@ -81,9 +99,9 @@ namespace Server
 
             for (int i = 0; i < 1000; i++)
             {
-                int r1 = random.Next(0, 108);
+                int r1 = random.Next(0, this.Cards.Count);
 
-                int r2 = random.Next(0, 108);
+                int r2 = random.Next(0, this.Cards.Count);
 
                 Card temp = this.Cards[r1];
                 this.Cards[r1] = this.Cards[r2];
