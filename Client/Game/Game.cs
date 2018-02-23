@@ -495,10 +495,10 @@ namespace Client
 
             while (true)
             {
+                Console.SetCursorPosition(8, this.numberOfCardsOfPlayers.Count + 20);
+
                 for (int i = 0; i < colors.Length; i++)
                 {
-                    Console.SetCursorPosition(8, this.numberOfCardsOfPlayers.Count + 20);
-
                     Console.ForegroundColor = (ConsoleColor)(Enum.Parse(typeof(ConsoleColor), colors[i]));
 
                     if (i == position)
