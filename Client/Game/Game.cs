@@ -354,6 +354,11 @@ namespace Client
                 }
                 else if (cki.Key == ConsoleKey.Enter)
                 {
+                    if ((this.Deck[position].Color == Color.White))
+                    {
+                        this.Deck[position] = this.ChooseColor(this.Deck[position]);
+                    }
+
                     this.networkManager.Send(ProtocolManager.SetCard(this.lobbyID.ToString(), this.playerID.ToString(), ((char)this.Deck[position].Color).ToString(), ((char)this.Deck[position].Value).ToString(), unoYesOrNo.ToString()));
 
                     this.WaitForServerResponse();
@@ -478,6 +483,67 @@ namespace Client
 
                 Console.WriteLine();
             }
+        }
+
+        private Card ChooseColor(Card card)
+        {
+            Card newCard = null;
+
+            string[] colors = new string[] { "Red", "Blue", "Green", "Yellow" };
+
+            int position = 0;
+
+            while (true)
+            {
+                for (int i = 0; i < colors.Length; i++)
+                {
+                    Console.SetCursorPosition(8, this.numberOfCardsOfPlayers.Count + 20);
+
+                    Console.ForegroundColor = (ConsoleColor)(Enum.Parse(typeof(ConsoleColor), colors[i]));
+
+                    if (i == position)
+                    {
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
+                    }
+
+                    Console.Write(colors[i]);
+
+                    Console.ResetColor();
+
+                    Console.Write(" ");
+                }
+
+                ConsoleKeyInfo cki = Console.ReadKey(true);
+
+                if (cki.Key == ConsoleKey.RightArrow)
+                {
+                    if (position + 1 > colors.Length - 1)
+                    {
+                        position = 0;
+                    }
+                    else
+                    {
+                        position++;
+                    }
+                }
+                else if (cki.Key == ConsoleKey.LeftArrow)
+                {
+                    if (position - 1 < 0)
+                    {
+                        position = colors.Length - 1;
+                    }
+                    else
+                    {
+                        position--;
+                    }
+                }
+                else if (cki.Key == ConsoleKey.Enter)
+                {
+                    break;
+                }
+            }
+
+            return newCard = new Card((Color)(Enum.Parse(typeof(Color), colors[position])), card.Value);
         }
 
         private void DataReceived(object sender, OnDataReceivedEventArgs args)
