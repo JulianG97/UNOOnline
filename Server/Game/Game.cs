@@ -525,7 +525,7 @@ namespace Server
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 7));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 7));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 8));
-            /*this.drawPile.Cards.Add(new NumericCard(Color.Red, 8));
+            this.drawPile.Cards.Add(new NumericCard(Color.Red, 8));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 9));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 9));
             this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.Skip));
@@ -624,7 +624,7 @@ namespace Server
             this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
             this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
             this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
-            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));*/
+            this.drawPile.Cards.Add(new ActionCard(Color.White, ActionCardType.WildDrawFour));
         }
     }
 }
