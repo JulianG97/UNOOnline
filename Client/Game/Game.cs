@@ -230,6 +230,8 @@ namespace Client
                                 roomArray = this.roomList.Split('-');
                             }
                         }
+
+                        break;
                     }
 
                     Console.Clear();
@@ -508,6 +510,8 @@ namespace Client
 
                     Console.Write(" (YOU)");
                 }
+
+                Console.ResetColor();
 
                 Console.WriteLine();
             }
