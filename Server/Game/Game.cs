@@ -131,17 +131,19 @@ namespace Server
                                 {
                                     if (this.CheckIfValidCard(card, player) == true)
                                     {
-                                        this.ExecuteCardEffect(card, this.GetNextPlayer(), false);
                                         this.RemoveCardAfterSet(card, player);
 
                                         player.NetworkManager.Send(ProtocolManager.OK());
 
-                                        if (this.CheckIfGameOver(setCardArray[4]) == true)
+                                        if (this.CheckIfGameOver() == true)
                                         {
                                             this.GameOver();
+                                            break;
                                         }
                                         else
                                         {
+                                            this.CheckIfUno(setCardArray[4]);
+                                            this.ExecuteCardEffect(card, this.GetNextPlayer(), false);
                                             ChangePlayerTurn();
                                         }
                                     }
@@ -152,6 +154,20 @@ namespace Server
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        private void CheckIfUno(string unoYesOrNo)
+        {
+            if (this.playerWhoIsOnTurn.Deck.Cards.Count == 1)
+            {
+                if (int.Parse(unoYesOrNo) == 0)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        playerWhoIsOnTurn.Deck.AddCard(this.drawPile.DrawCard());
                     }
                 }
             }
@@ -356,9 +372,9 @@ namespace Server
             }
         }
 
-        private bool CheckIfGameOver(string unoYesOrNo)
+        private bool CheckIfGameOver()
         {
-            if (this.playerWhoIsOnTurn.Deck.Cards.Count == 0 && int.Parse(unoYesOrNo) == 1)
+            if (this.playerWhoIsOnTurn.Deck.Cards.Count == 0)
             {
                 return true;
             }
@@ -507,9 +523,9 @@ namespace Server
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 6));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 6));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 7));
-            /*this.drawPile.Cards.Add(new NumericCard(Color.Red, 7));
+            this.drawPile.Cards.Add(new NumericCard(Color.Red, 7));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 8));
-            this.drawPile.Cards.Add(new NumericCard(Color.Red, 8));
+            /*this.drawPile.Cards.Add(new NumericCard(Color.Red, 8));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 9));
             this.drawPile.Cards.Add(new NumericCard(Color.Red, 9));
             this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.Skip));
@@ -517,12 +533,12 @@ namespace Server
             this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.Reverse));
             this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.Reverse));
             this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.DrawTwo));
-            this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.DrawTwo));*/
+            this.drawPile.Cards.Add(new ActionCard(Color.Red, ActionCardType.DrawTwo));
 
             // Add all yellow cards to deck
             this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 0));
             this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 1));
-            /*this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 1));
+            this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 1));
             this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 2));
             this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 2));
             this.drawPile.Cards.Add(new NumericCard(Color.Yellow, 3));

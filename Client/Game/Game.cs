@@ -264,6 +264,8 @@ namespace Client
             {
                 Console.Clear();
                 this.ShowPlayerStats();
+                Console.WriteLine();
+                Console.WriteLine("[U] Press U for UNO");
                 this.ShowPiles();
 
                 if (this.playerIDWhoIsOnTurn == this.playerID)
@@ -288,6 +290,8 @@ namespace Client
 
         private void GameOver()
         {
+            this.networkManager.Stop();
+
             Console.Clear();
 
             Menu.DisplayGameHeader();
@@ -295,7 +299,7 @@ namespace Client
 
             Console.ForegroundColor = ConsoleColor.White;
 
-            Console.WriteLine("Game Over! Player {0} won the game!");
+            Console.WriteLine("Game Over! Player {0} won the game!", this.winnerID);
             Console.WriteLine();
             Console.WriteLine("Press any key to return to the main menu...");
             Console.ResetColor();
@@ -311,13 +315,13 @@ namespace Client
             Card drawPile = new Card(Color.White, Value.Uno);
             Card discardPile = this.lastCard;
 
-            Console.SetCursorPosition(8, this.numberOfCardsOfPlayers.Count + 2);
+            Console.SetCursorPosition(8, this.numberOfCardsOfPlayers.Count + 4);
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("DRAW   DISCARD");
             Console.ResetColor();
 
-            drawPile.Draw(7, this.numberOfCardsOfPlayers.Count + 3);
-            discardPile.Draw(15, this.numberOfCardsOfPlayers.Count + 3);
+            drawPile.Draw(7, this.numberOfCardsOfPlayers.Count + 5);
+            discardPile.Draw(15, this.numberOfCardsOfPlayers.Count + 5);
         }
 
         private void SetCard()
@@ -411,11 +415,11 @@ namespace Client
                 Console.ForegroundColor = ConsoleColor.DarkGray;
             }
 
-            Console.SetCursorPosition(1, numberOfCardsOfPlayers.Count + 15);
-            Console.WriteLine(" /|_ ");
-            Console.SetCursorPosition(1, numberOfCardsOfPlayers.Count + 16);
-            Console.WriteLine("|  _|");
             Console.SetCursorPosition(1, numberOfCardsOfPlayers.Count + 17);
+            Console.WriteLine(" /|_ ");
+            Console.SetCursorPosition(1, numberOfCardsOfPlayers.Count + 18);
+            Console.WriteLine("|  _|");
+            Console.SetCursorPosition(1, numberOfCardsOfPlayers.Count + 19);
             Console.WriteLine(" \\|  ");
 
             Console.ResetColor();
@@ -428,30 +432,30 @@ namespace Client
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
 
-                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 9);
-                    Console.WriteLine("  _  ");
-                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 10);
-                    Console.WriteLine("_| |_");
                     Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 11);
-                    Console.WriteLine("\\   /");
+                    Console.WriteLine("  _  ");
                     Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 12);
+                    Console.WriteLine("_| |_");
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 13);
+                    Console.WriteLine("\\   /");
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 14);
                     Console.WriteLine(" \\_/ ");
 
                     Console.ResetColor();
                 }
                 else
                 {
-                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 9);
-                    Console.WriteLine("     ");
-                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 10);
-                    Console.WriteLine("     ");
                     Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 11);
                     Console.WriteLine("     ");
                     Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 12);
                     Console.WriteLine("     ");
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 13);
+                    Console.WriteLine("     ");
+                    Console.SetCursorPosition(positionX + 1, numberOfCardsOfPlayers.Count + 14);
+                    Console.WriteLine("     ");
                 }
 
-                this.Deck[i].Draw(positionX, this.numberOfCardsOfPlayers.Count + 13);
+                this.Deck[i].Draw(positionX, this.numberOfCardsOfPlayers.Count + 15);
 
                 Console.ResetColor();
             }
@@ -465,11 +469,11 @@ namespace Client
                 Console.ForegroundColor = ConsoleColor.DarkGray;
             }
 
-            Console.SetCursorPosition(positionX, numberOfCardsOfPlayers.Count + 15);
-            Console.WriteLine(" _|\\ ");
-            Console.SetCursorPosition(positionX, numberOfCardsOfPlayers.Count + 16);
-            Console.WriteLine("|_  |");
             Console.SetCursorPosition(positionX, numberOfCardsOfPlayers.Count + 17);
+            Console.WriteLine(" _|\\ ");
+            Console.SetCursorPosition(positionX, numberOfCardsOfPlayers.Count + 18);
+            Console.WriteLine("|_  |");
+            Console.SetCursorPosition(positionX, numberOfCardsOfPlayers.Count + 19);
             Console.WriteLine("  |/ ");
 
             Console.ResetColor();
@@ -519,7 +523,7 @@ namespace Client
 
             while (true)
             {
-                Console.SetCursorPosition(8, this.numberOfCardsOfPlayers.Count + 20);
+                Console.SetCursorPosition(8, this.numberOfCardsOfPlayers.Count + 22);
 
                 for (int i = 0; i < colors.Length; i++)
                 {
