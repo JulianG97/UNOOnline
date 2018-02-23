@@ -109,6 +109,10 @@ namespace Client
 
                 Console.Clear();
             }
+
+                            Console.Clear();
+
+                Menu.DisplayMainMenu();
         }
 
         public void JoinGame()
@@ -267,7 +271,9 @@ namespace Client
                 Console.Clear();
                 this.ShowPlayerStats();
                 Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("[U] Press U for UNO");
+                Console.ResetColor();
                 this.ShowPiles();
 
                 if (this.playerIDWhoIsOnTurn == this.playerID)
@@ -301,15 +307,18 @@ namespace Client
 
             Console.ForegroundColor = ConsoleColor.White;
 
-            Console.WriteLine("Game Over! Player {0} won the game!", this.winnerID);
+            if (this.winnerID == this.playerID)
+            {
+                Console.WriteLine("Game Over! You won the game!");
+            }
+            else
+            {
+                Console.WriteLine("Game Over! Player {0} won the game!", this.winnerID);
+            }
             Console.WriteLine();
             Console.WriteLine("Press any key to return to the main menu...");
             Console.ResetColor();
             Console.ReadKey(true);
-
-            Console.Clear();
-
-            Menu.DisplayMainMenu();
         }
 
         private void ShowPiles()
