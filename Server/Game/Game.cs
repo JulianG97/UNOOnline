@@ -56,6 +56,14 @@ namespace Server
             this.discardPile.AddCard(drawPile.DrawCard());
             this.playerWhoIsOnTurn = this.Players[0];
             this.ExecuteCardEffect(this.discardPile.Cards[0], this.playerWhoIsOnTurn, true);
+
+            bool firstPlayerCanSetCard = false;
+
+            while (firstPlayerCanSetCard == false)
+            {
+                firstPlayerCanSetCard = this.CheckIfNextPlayerCanSetCard();
+            }
+
             this.SendPlayerCards();
             this.SendRoundInformation();
         }
