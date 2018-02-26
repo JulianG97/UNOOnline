@@ -126,23 +126,6 @@ namespace Server
 
         private void IsAlive()
         {
-            /*while (this.isReading == true)
-            {
-                this.Send(ProtocolManager.IsAlive());
-
-                Thread.Sleep(5000);
-
-                if (this.isAlive == false)
-                {
-                    this.Stop();
-                    this.FireOnConnectionLost();
-                }
-                else if (this.isAlive == true)
-                {
-                    this.isAlive = false;
-                }
-            }*/
-
             Thread sendIsAliveThread = new Thread(this.SendIsAlive);
             Thread checkIfIsAliveThread = new Thread(this.CheckIfIsAlive);
 
@@ -168,8 +151,8 @@ namespace Server
 
                 if (this.isAlive == false)
                 {
-                    this.Stop();
                     this.FireOnConnectionLost();
+                    this.Stop();
                 }
                 else if (this.isAlive == true)
                 {
