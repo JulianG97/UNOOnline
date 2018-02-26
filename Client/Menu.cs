@@ -11,7 +11,7 @@ namespace Client
     {
         public static void DisplayMainMenu()
         {
-            NetworkManager networkManager = new NetworkManager(IPAddress.Parse("10.0.0.54"));
+            NetworkManager networkManager = new NetworkManager(IPAddress.Parse("193.154.76.83"));
 
             string[] menuItems = {"Join Game", "Create Game", "Help", "Exit"};
             int menuPosition = DisplayMenu(menuItems);
