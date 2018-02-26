@@ -351,9 +351,14 @@ namespace Client
                 positionEnd = this.Deck.Count;
             }
 
-            while (true)
+            while (this.gameOver == false)
             {
                 DisplayCards(positionStart, positionEnd, position);
+
+                if (Console.KeyAvailable == false)
+                {
+                    continue;
+                }
 
                 ConsoleKeyInfo cki = Console.ReadKey(true);
 

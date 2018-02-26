@@ -72,21 +72,32 @@ namespace Server
 
         public void RemovePlayerFromGame(Player player)
         {
-            if (player.PlayerID == this.playerWhoIsOnTurn.PlayerID)
+            if (this.playerWhoIsOnTurn != null)
             {
-                this.playerWhoIsOnTurn = this.GetNextPlayer();
+                if (player.PlayerID == this.playerWhoIsOnTurn.PlayerID)
+                {
+                    this.playerWhoIsOnTurn = this.GetNextPlayer();
+                }
+
+                foreach (Card card in player.Deck.Cards)
+                {
+                    this.discardPile.Cards.Add(card);
+                }
+
+                this.Players.RemoveAt(player.PlayerID - 1);
+
+                if (this.Players.Count == 1)
+                {
+                    this.GameOver();
+                }
+                else if (this.Players.Count == 0)
+                {
+                    this.FireOnGameEnded();
+                }
             }
-
-            foreach (Card card in player.Deck.Cards)
+            else
             {
-                this.discardPile.Cards.Add(card);
-            }
-
-            this.Players.RemoveAt(player.PlayerID - 1);
-
-            if (this.Players.Count == 1)
-            {
-                this.GameOver();
+                this.Players.RemoveAt(player.PlayerID - 1);
             }
         }
 
