@@ -139,7 +139,7 @@ namespace Server
             {
                 this.Send(ProtocolManager.IsAlive());
 
-                Thread.Sleep(100);
+                Thread.Sleep(2000);
             }
         }
 
@@ -147,7 +147,7 @@ namespace Server
         {
             while (this.isReading == true)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
 
                 if (this.isAlive == false)
                 {
