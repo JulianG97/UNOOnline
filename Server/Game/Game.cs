@@ -8,6 +8,8 @@ namespace Server
 {
     public class Game
     {
+        public event EventHandler<EventArgs> GameEnded;
+
         private Deck drawPile;
         private Deck discardPile;
         private Player playerWhoIsOnTurn;
@@ -66,6 +68,26 @@ namespace Server
 
             this.SendPlayerCards();
             this.SendRoundInformation();
+        }
+
+        public void RemovePlayerFromGame(Player player)
+        {
+            if (player.PlayerID == this.playerWhoIsOnTurn.PlayerID)
+            {
+                this.playerWhoIsOnTurn = this.GetNextPlayer();
+            }
+
+            foreach (Card card in player.Deck.Cards)
+            {
+                this.discardPile.Cards.Add(card);
+            }
+
+            this.Players.RemoveAt(player.PlayerID - 1);
+
+            if (this.Players.Count == 1)
+            {
+                this.GameOver();
+            }
         }
 
         private void DrawPileIsEmpty(object sender, EventArgs args)
@@ -397,6 +419,16 @@ namespace Server
             foreach (Player player in this.Players)
             {
                 player.NetworkManager.Send(ProtocolManager.GameOver(this.playerWhoIsOnTurn.PlayerID.ToString()));
+            }
+
+            this.FireOnGameEnded();
+        }
+
+        protected virtual void FireOnGameEnded()
+        {
+            if (this.GameEnded != null)
+            {
+                this.GameEnded(this, new EventArgs());
             }
         }
 

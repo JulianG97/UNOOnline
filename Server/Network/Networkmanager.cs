@@ -14,9 +14,10 @@ namespace Server
         private NetworkStream playerStream;
         private Thread readThread;
         private bool isReading;
+        private Thread isAliveThread;
         private bool isAlive;
 
-        public event EventHandler<EventArgs> OnConnectionsLost;
+        public event EventHandler<OnConnectionLostEventArgs> OnConnectionsLost;
         public event EventHandler<OnDataReceivedEventArgs> OnDataReceived;
 
         public NetworkManager(TcpClient playerClient)
@@ -35,9 +36,13 @@ namespace Server
             try
             {
                 this.playerStream = this.PlayerClient.GetStream();
+
                 this.readThread = new Thread(this.Read);
                 this.isReading = true;
-                readThread.Start();
+                this.readThread.Start();
+
+                this.isAliveThread = new Thread(this.IsAlive);
+                this.isAliveThread.Start();
             }
             catch
             {
@@ -129,11 +134,12 @@ namespace Server
 
                 if (this.isAlive == false)
                 {
+                    this.Stop();
                     this.FireOnConnectionLost();
                 }
-                else
+                else if (this.isAlive == true)
                 {
-                    this.isAlive = true;
+                    this.isAlive = false;
                 }
             }
         }
@@ -142,7 +148,7 @@ namespace Server
         {
             if (this.OnConnectionsLost != null)
             {
-                this.OnConnectionsLost(this, new EventArgs());
+                this.OnConnectionsLost(this, new OnConnectionLostEventArgs(this.PlayerClient));
             }
         }
 

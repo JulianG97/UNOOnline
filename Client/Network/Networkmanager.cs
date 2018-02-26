@@ -17,6 +17,8 @@ namespace Client
         private IPEndPoint ipEndpoint;
         private Thread readThread;
         private bool isReading;
+        private Thread isAliveThread;
+        private bool isAlive;
 
         public event EventHandler<EventArgs> OnConnectionsLost;
         public event EventHandler<OnDataReceivedEventArgs> OnDataReceived;
@@ -69,9 +71,13 @@ namespace Client
                 try
                 {
                     this.stream = client.GetStream();
+
                     this.readThread = new Thread(this.Read);
                     this.isReading = true;
-                    readThread.Start();
+                    this.readThread.Start();
+
+                    this.isAliveThread = new Thread(this.IsAlive);
+                    this.isAliveThread.Start();
                 }
                 catch
                 {
@@ -172,11 +178,39 @@ namespace Client
                         receivedBytes.Add(buffer[0]);
                     }
 
+                    if (receivedBytes.Count == 5)
+                    {
+                        if (receivedBytes[0] == 85 && receivedBytes[1] == 78 && receivedBytes[2] == 79 && receivedBytes[3] == 73 && receivedBytes[4] == 65)
+                        {
+                            this.isAlive = true;
+                        }
+                    }
+
                     this.FireOnDataReceived(receivedBytes.ToArray());
                 }
                 catch
                 {
                     this.FireOnConnectionLost();
+                }
+            }
+        }
+
+        private void IsAlive()
+        {
+            while (this.isReading == true)
+            {
+                this.Send(ProtocolManager.IsAlive());
+
+                Thread.Sleep(3000);
+
+                if (this.isAlive == false)
+                {
+                    this.Stop();
+                    this.FireOnConnectionLost();
+                }
+                else if (this.isAlive == true)
+                {
+                    this.isAlive = false;
                 }
             }
         }
