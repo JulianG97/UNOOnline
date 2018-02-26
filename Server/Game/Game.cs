@@ -90,14 +90,15 @@ namespace Server
                 {
                     this.GameOver();
                 }
-                else if (this.Players.Count == 0)
-                {
-                    this.FireOnGameEnded();
-                }
             }
             else
             {
                 this.Players.RemoveAt(player.PlayerID - 1);
+
+                if (this.Players.Count == 0)
+                {
+                    this.FireOnGameEnded();
+                }
             }
         }
 
