@@ -126,11 +126,45 @@ namespace Server
 
         private void IsAlive()
         {
-            while (this.isReading == true)
+            /*while (this.isReading == true)
             {
                 this.Send(ProtocolManager.IsAlive());
 
                 Thread.Sleep(5000);
+
+                if (this.isAlive == false)
+                {
+                    this.Stop();
+                    this.FireOnConnectionLost();
+                }
+                else if (this.isAlive == true)
+                {
+                    this.isAlive = false;
+                }
+            }*/
+
+            Thread sendIsAliveThread = new Thread(this.SendIsAlive);
+            Thread checkIfIsAliveThread = new Thread(this.CheckIfIsAlive);
+
+            sendIsAliveThread.Start();
+            checkIfIsAliveThread.Start();
+        }
+
+        private void SendIsAlive()
+        {
+            while (this.isReading == true)
+            {
+                this.Send(ProtocolManager.IsAlive());
+
+                Thread.Sleep(100);
+            }
+        }
+
+        private void CheckIfIsAlive()
+        {
+            while (this.isReading == true)
+            {
+                Thread.Sleep(1000);
 
                 if (this.isAlive == false)
                 {
