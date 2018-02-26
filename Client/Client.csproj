@@ -50,6 +50,7 @@
     <Compile Include="Game\Game.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Network\NetworkManager.cs" />
+    <Compile Include="Network\OnConnectionLostEventArgs.cs" />
     <Compile Include="Network\OnDataReceivedEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

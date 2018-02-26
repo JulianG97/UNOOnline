@@ -130,7 +130,7 @@ namespace Server
             {
                 this.Send(ProtocolManager.IsAlive());
 
-                Thread.Sleep(3000);
+                Thread.Sleep(5000);
 
                 if (this.isAlive == false)
                 {

@@ -53,6 +53,7 @@
     <Compile Include="Game\Direction.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Network\Networkmanager.cs" />
+    <Compile Include="Network\OnConnectionLostEventArgs.cs" />
     <Compile Include="Network\OnDataReceivedEventArgs.cs" />
     <Compile Include="Game\NumericCard.cs" />
     <Compile Include="Game\Player.cs" />

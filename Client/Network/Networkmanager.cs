@@ -199,8 +199,6 @@ namespace Client
         {
             while (this.isReading == true)
             {
-                this.Send(ProtocolManager.IsAlive());
-
                 Thread.Sleep(3000);
 
                 if (this.isAlive == false)
@@ -212,6 +210,8 @@ namespace Client
                 {
                     this.isAlive = false;
                 }
+
+                this.Send(ProtocolManager.IsAlive());
             }
         }
 
