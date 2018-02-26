@@ -58,6 +58,7 @@
     <Compile Include="Protocol\ProtocolManager.cs" />
     <Compile Include="Protocol\ProtocolTypes.cs" />
     <Compile Include="Game\Value.cs" />
+    <Compile Include="WindowWatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

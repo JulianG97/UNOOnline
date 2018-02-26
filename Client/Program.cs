@@ -11,6 +11,11 @@ namespace Client
         public static void Main(string[] args)
         {
             Console.CursorVisible = false;
+            Console.WindowHeight = 40;
+            Console.WindowWidth = 50;
+
+            WindowWatcher windowWatcher = new WindowWatcher(40, 70);
+            windowWatcher.Start();
 
             Menu.DisplayMainMenu();
         }
