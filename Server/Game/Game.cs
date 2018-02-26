@@ -77,6 +77,7 @@ namespace Server
                 if (player.PlayerID == this.playerWhoIsOnTurn.PlayerID)
                 {
                     this.playerWhoIsOnTurn = this.GetNextPlayer();
+                    ChangePlayerTurn();
                 }
 
                 foreach (Card card in player.Deck.Cards)
@@ -84,7 +85,14 @@ namespace Server
                     this.discardPile.Cards.Add(card);
                 }
 
-                this.Players.RemoveAt(player.PlayerID - 1);
+                for (int position = 0; position < this.Players.Count; position++)
+                {
+                    if (Players[position].PlayerID == player.PlayerID)
+                    {
+                        this.Players.RemoveAt(position);
+                        break;
+                    }
+                }
 
                 if (this.Players.Count == 1)
                 {
@@ -93,7 +101,16 @@ namespace Server
             }
             else
             {
-                this.Players.RemoveAt(player.PlayerID - 1);
+                for (int position = 0; position < this.Players.Count; position++)
+                {
+                    if (Players[position].PlayerID == player.PlayerID)
+                    {
+                        this.Players.RemoveAt(position);
+                        break;
+                    }
+                }
+
+                this.JoinedPlayers--;
 
                 if (this.Players.Count == 0)
                 {
@@ -428,10 +445,18 @@ namespace Server
 
         private void GameOver()
         {
-            foreach (Player player in this.Players)
+            try
             {
-                player.NetworkManager.Send(ProtocolManager.GameOver(this.playerWhoIsOnTurn.PlayerID.ToString()));
+                if (this.Players.Count > 0)
+                {
+                    foreach (Player player in this.Players)
+                    {
+                        player.NetworkManager.Send(ProtocolManager.GameOver(this.playerWhoIsOnTurn.PlayerID.ToString()));
+                    }
+                }
             }
+            catch (Exception)
+            { }
 
             this.FireOnGameEnded();
         }

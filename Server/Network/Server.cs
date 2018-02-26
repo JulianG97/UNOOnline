@@ -171,6 +171,7 @@ namespace Server
             game.Players = new List<Player>();
             game.Players.Add(new Player(1, networkManager));
             this.games.Add(game);
+            game.GameEnded += this.GameEnded;
 
             if (amountOfPlayers < 2 || amountOfPlayers > 4)
             {
@@ -223,7 +224,6 @@ namespace Server
 
         private void StartGame(Game game)
         {
-            game.GameEnded += this.GameEnded;
             game.PrepareGameStart();
 
             foreach (Player player in game.Players)
