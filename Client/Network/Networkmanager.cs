@@ -29,6 +29,7 @@ namespace Client
             this.ipEndpoint = new IPEndPoint(ip, 3000);
             this.client = new TcpClient();
             this.Connected = false;
+            locker = new object();
         }
 
         public bool Connected

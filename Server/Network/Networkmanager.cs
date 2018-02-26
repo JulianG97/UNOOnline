@@ -24,6 +24,7 @@ namespace Server
         public NetworkManager(TcpClient playerClient)
         {
             this.PlayerClient = playerClient;
+            locker = new object();
         }
 
         public TcpClient PlayerClient
