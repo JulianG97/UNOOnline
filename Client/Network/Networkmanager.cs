@@ -19,6 +19,7 @@ namespace Client
         private bool isReading;
         private Thread isAliveThread;
         private bool isAlive;
+        private static object locker;
 
         public event EventHandler<EventArgs> OnConnectionsLost;
         public event EventHandler<OnDataReceivedEventArgs> OnDataReceived;
@@ -137,15 +138,21 @@ namespace Client
 
         public void Send(Protocol protocol)
         {
-            try
+            lock (locker)
             {
-                byte[] sendBytes = protocol.ToByteArray();
+                try
+                {
+                    byte[] sendBytes = protocol.ToByteArray();
 
-                this.stream.Write(sendBytes, 0, sendBytes.Length);
-            }
-            catch
-            {
-                this.FireOnConnectionLost();
+                    if (stream.CanWrite == true)
+                    {
+                        this.stream.Write(sendBytes, 0, sendBytes.Length);
+                    }
+                }
+                catch
+                {
+                    this.FireOnConnectionLost();
+                }
             }
         }
 

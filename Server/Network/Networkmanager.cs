@@ -16,6 +16,7 @@ namespace Server
         private bool isReading;
         private Thread isAliveThread;
         private bool isAlive;
+        private static object locker;
 
         public event EventHandler<OnConnectionLostEventArgs> OnConnectionsLost;
         public event EventHandler<OnDataReceivedEventArgs> OnDataReceived;
@@ -66,15 +67,21 @@ namespace Server
 
         public void Send(Protocol protocol)
         {
-            try
+            lock (locker)
             {
-                byte[] sendBytes = protocol.ToByteArray();
+                try
+                {
+                    byte[] sendBytes = protocol.ToByteArray();
 
-                this.playerStream.Write(sendBytes, 0, sendBytes.Length);
-            }
-            catch
-            {
-                this.FireOnConnectionLost();
+                    if (this.playerStream.CanWrite)
+                    {
+                        this.playerStream.Write(sendBytes, 0, sendBytes.Length);
+                    }
+                }
+                catch
+                {
+                    this.FireOnConnectionLost();
+                }
             }
         }
 
